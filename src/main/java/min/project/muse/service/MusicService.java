@@ -40,7 +40,7 @@ public class MusicService {
     public Music update(long id, UpdateMusicRequest request) {
         Music music = musicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
-        music.update(request.getContent());
+        music.update(request.getDetails());
 
         return music;
     }

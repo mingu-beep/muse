@@ -1,12 +1,10 @@
 package min.project.muse.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.web.dto.AddMusicRequest;
 import min.project.muse.web.dto.UpdateMusicRequest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,14 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -58,10 +54,16 @@ class MusicApiControllerTest {
         final String url = "/api/musics";
 
         final String title = "title";
-        final String singer = "singer";
-        final String content = "content";
-        final String mood = "mood";
-        final AddMusicRequest musicRequest = new AddMusicRequest(title, singer, mood, content);
+        final String artist = "artist";
+        final String details = "details";
+        final List<String> mood = List.of("a", "b", "c");
+        
+        final AddMusicRequest musicRequest = AddMusicRequest.builder()
+                .title(title)
+                .artist(artist)
+                .details(details)
+                .mood(mood)
+                .build();
 
         final String requestBody = objectMapper.writeValueAsString(musicRequest);
 
@@ -77,7 +79,7 @@ class MusicApiControllerTest {
 
         assertThat(musics.size()).isEqualTo(1);
         assertThat(musics.get(0).getTitle()).isEqualTo(title);
-        assertThat(musics.get(0).getContent()).isEqualTo(content);
+        assertThat(musics.get(0).getDetails()).isEqualTo(details);
 
     }
 
@@ -89,7 +91,7 @@ class MusicApiControllerTest {
         final String title = "title";
         final String singer = "singer";
 
-        musicRepository.save(Music.builder().title(title).singer(singer).build());
+        musicRepository.save(Music.builder().title(title).artist(singer).build());
 
         // when
         final ResultActions resultActions = mockMvc.perform(get(url).accept(MediaType.APPLICATION_JSON));
@@ -108,7 +110,7 @@ class MusicApiControllerTest {
         final String title = "title";
         final String singer = "singer";
 
-        Music saved = musicRepository.save(Music.builder().title(title).singer(singer).build());
+        Music saved = musicRepository.save(Music.builder().title(title).artist(singer).build());
 
         // when
         final ResultActions resultActions = mockMvc.perform(get(url, saved.getId()));
@@ -128,7 +130,7 @@ class MusicApiControllerTest {
         final String title = "title";
         final String singer = "singer";
 
-        Music savedMusic = musicRepository.save(Music.builder().title(title).singer(singer).build());
+        Music savedMusic = musicRepository.save(Music.builder().title(title).artist(singer).build());
 
         // when
         mockMvc.perform(delete(url, savedMusic.getId()))
@@ -151,7 +153,7 @@ class MusicApiControllerTest {
         final String singer = "singer";
         final String content = "content";
 
-        Music savedMusic = musicRepository.save(Music.builder().title(title).singer(singer).content(content).build());
+        Music savedMusic = musicRepository.save(Music.builder().title(title).artist(singer).details(content).build());
 
         final String newContent = "new_content";
 
@@ -167,7 +169,7 @@ class MusicApiControllerTest {
 
         Music music = musicRepository.findById(savedMusic.getId()).get();
 
-        assertThat(music.getContent()).isEqualTo(newContent);
+        assertThat(music.getDetails()).isEqualTo(newContent);
     }
 
 }

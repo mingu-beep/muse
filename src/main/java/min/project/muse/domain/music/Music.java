@@ -2,6 +2,9 @@ package min.project.muse.domain.music;
 
 import jakarta.persistence.*;
 import lombok.*;
+import min.project.muse.util.StringListConverter;
+
+import java.util.List;
 
 /**
  * Main Entity
@@ -27,17 +30,18 @@ public class Music {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "singer")
-    private String singer;
+    @Column(name = "artist")
+    private String artist;
 
+    @Convert(converter = StringListConverter.class)
     @Column(name = "mood")
-    private String mood;
+    private List<String> mood;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "details")
+    private String details;
 
-    public void update(String content) {
-        this.content = content;
+    public void update(String details) {
+        this.details = details;
     }
 
 }
