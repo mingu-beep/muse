@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link href="/css/upload.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div th:replace="~{/fragment/header :: header}"></div>
+
+    <!-- MAIN -->
+    <main>
+      <main class="uploadContainer my-5">
+        <!--사진업로드 박스-->
+        <section class="upload">
+          <!--사진업로드 로고-->
+          <div class="upload-top">
+            <a href="home.html" class="">
+              <img src="/images/logo.jpg" alt="" />
+            </a>
+            <p> Upload Music! </p>
+          </div>
+          <!--사진업로드 로고 end-->
+
+          <!--사진업로드 Form-->
+          <form
+            class="upload-form"
+            action="/api/musics"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <div class="row upload-form-detail">
+              <label for="title" class="col-form-label">TITLE</label>
+              <div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                />
+              </div>
+            </div>
+            <div class="row upload-form-detail">
+              <label for="artist" class="col-form-label">ARTIST</label>
+              <div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="artist"
+                  name="artist"
+                />
+              </div>
+            </div>
+            <div class="row upload-form-detail">
+              <label for="mood" class="col-form-label">MOOD</label>
+              <div>
+                <input type="text" class="form-control" id="mood" name="mood" />
+              </div>
+            </div>
+            <div class="row upload-form-detail">
+              <label for="details" class="col-form-label">DETAILS</label>
+              <div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="details"
+                  name="details"
+                />
+              </div>
+            </div>
+            <input type="file" name="image" id="image" onchange="imageChoose(this)" />
+            <div class="upload-img">
+              <img
+                src="/img/white.jpg"
+                alt="미리보기"
+                id="imageUploadPreview"
+              />
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 my-2">
+              UPLOAD
+            </button>
+          </form>
+          <!--사진업로드 Form-->
+        </section>
+        <!--사진업로드 박스 end-->
+      </main>
+    </main>
+
+    <script src="/js/upload.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
