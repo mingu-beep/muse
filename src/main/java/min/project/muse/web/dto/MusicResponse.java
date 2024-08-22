@@ -7,11 +7,11 @@ import min.project.muse.domain.music.Music;
 public class MusicResponse {
 
     private final String title;
-    private final String singer;
+    private final String artist;
 
     public MusicResponse(Music music) {
         this.title = music.getTitle();
-        this.singer = music.getSinger();
+        this.artist = music.getArtist();
     }
 
 }

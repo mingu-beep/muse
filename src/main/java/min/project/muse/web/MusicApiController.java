@@ -20,7 +20,8 @@ public class MusicApiController {
     private final MusicService musicService;
 
     @PostMapping("/api/musics")
-    public ResponseEntity<Music> addMusic(@RequestBody AddMusicRequest request) {
+    public ResponseEntity<Music> addMusic(AddMusicRequest request) {
+
         Music saved = musicService.save(request);
 
         // 요청한 자원이 성공적으로 생성되었으며 저장한 음악 정보를 응답 객체에 담아 전송
