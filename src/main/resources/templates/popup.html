@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cabinet - 중복확인</title>
+    <!-- 부트스트랩 -->
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+    />
+    <!-- custom css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+<body>
+<nav class="navbar navbar-light" style="background-color: black">
+    <div class="navbar-brand" style="color: white">Cabinet</div>
+</nav>
+<main class="text-center container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Artist</th>
+            <th scope="col">track</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${trackList}">
+            <th scope="row" th:text="${itemStat.count + 10*(pageDTO.now - 1)}">1</th>
+            <td th:text="${item.artist}" th:id="'artist-' + ${itemStat.count}">Artist</td>
+            <td th:text="${item.track}" th:id="'track-' + ${itemStat.count}">Track</td>
+            <td>
+                <button class="btn" th:onclick="|sendToParent(${itemStat.count})|">
+                    Select
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<nav aria-label="Page navigation example" >
+    <ul class="pagination justify-content-center">
+
+        <li class="page-item">
+            <a class="page-link" th:href="@{/api/last(track=${track}, page=1)}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:href="@{/api/last(track=${track}, page=${pageDTO.now - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+        <th:block  th:each="num: ${#numbers.sequence(pageDTO.start, pageDTO.end)}">
+
+            <li th:if="${pageDTO.now == num}" class="page-item active" aria-current="page">
+                <a class="page-link"
+                   th:href="@{/api/last(track=${track}, page=${num})}"
+                   th:text="${num}">1</a>
+            </li>
+
+            <li th:unless="${pageDTO.now == num}" class="page-item">
+                <a class="page-link"
+                   th:href="@{/api/last(track=${track}, page=${num})}"
+                   th:text="${num}">1</a>
+            </li>
+        </th:block>
+        <li class="page-item">
+            <a class="page-link" th:href="@{/api/last(track=${track}, page=${pageDTO.now + 1})}" aria-label="Next">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:href="@{/api/last(track=${track}, page=${pageDTO.max})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<!-- fontawesome -->
+<script
+        src="https://kit.fontawesome.com/f97d0d047b.js"
+        crossorigin="anonymous"
+></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"
+></script>
+<script src="/js/popup.js"></script>
+</body>
+</html>
