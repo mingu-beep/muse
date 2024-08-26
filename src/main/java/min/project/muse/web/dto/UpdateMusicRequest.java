@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class UpdateMusicRequest {
-    private String content;
+    private String details;
 }

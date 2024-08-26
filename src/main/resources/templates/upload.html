@@ -38,7 +38,8 @@
             enctype="multipart/form-data"
           >
             <div class="row upload-form-detail">
-              <label for="title" class="col-form-label">TITLE</label>
+
+              <label for="title" class="col-form-label pt-2">TITLE</label>
               <div>
                 <input
                   type="text"
@@ -46,6 +47,13 @@
                   id="title"
                   name="title"
                 />
+              </div>
+              <div
+                      class="btn btn-primary searchTrackBtn"
+                      onclick="apiTrack()"
+                      role="button"
+                      aria-pressed="true"
+              >음악 검색
               </div>
             </div>
             <div class="row upload-form-detail">
