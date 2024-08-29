@@ -50,8 +50,7 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/")) // 로그인이 성공했을 때에 이동할 경로
                 .logout(logout -> logout // 로그아웃 설정
                         .logoutSuccessUrl("/login") // 로그아웃이 성공했을 때 이동할 경로를 설정
-                        .invalidateHttpSession(true) // 로그아웃 이후에 세션을 전체 삭제할지 여부를 설정한다.
-                )
+                        .invalidateHttpSession(true)) // 로그아웃 이후에 세션을 전체 삭제할지 여부를 설정한다.
                 .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
                 .build();
     }

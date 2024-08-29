@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        lang="en" data-bs-theme="auto">
   <header class="p-3 text-bg-dark" th:fragment="header">
     <div class="container">
       <div
@@ -44,20 +47,14 @@
         </form>
 
         <div class="text-end">
-          <button
-            type="button"
-            class="btn btn-outline-light me-2"
-            onclick="location.href='/auth/login'"
-          >
+          <button sec:authorize="isAnonymous()" type="button" class="btn btn-outline-light me-2" onclick="location.href='/login';">
             Login
           </button>
-          <button
-            type="button"
-            class="btn btn-warning"
-            onclick="location.href='/auth/signup'"
-          >
-            Sign-up
+          <button sec:authorize="isAnonymous()" type="button" class="btn btn-warning" onclick="location.href='/signup';">Sign-up</button>
+          <button sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-light me-2" onclick="location.href='/logout';">
+            Logout
           </button>
+
         </div>
       </div>
     </div>
