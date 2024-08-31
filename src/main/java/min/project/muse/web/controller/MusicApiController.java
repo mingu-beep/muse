@@ -1,8 +1,7 @@
-package min.project.muse.web;
+package min.project.muse.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import min.project.muse.domain.music.Music;
-import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.service.MusicService;
 import min.project.muse.web.dto.AddMusicRequest;
 import min.project.muse.web.dto.MusicResponse;
