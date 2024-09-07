@@ -40,6 +40,9 @@ public class Music {
     @Column(name = "details")
     private String details;
 
+    @Column(name = "writer", nullable = false)
+    private String writer;
+
     public void update(String details) {
         this.details = details;
     }

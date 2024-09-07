@@ -32,6 +32,15 @@ public class User implements UserDetails { // UserDetails 를 상속받아 인�
     @Column(name = "email")
     private String email;
 
+    @Column(name = "nickname", unique = true)
+    private String nickname;
+
+    public User update(String nickname) {
+        this.nickname = nickname;
+
+        return this;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));
