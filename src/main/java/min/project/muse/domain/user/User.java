@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class User implements UserDetails { // UserDetails 를 상속받아 인�
     @Column(name = "nickname", unique = true)
     private String nickname;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
     public User update(String nickname) {
         this.nickname = nickname;
 
@@ -43,7 +48,9 @@ public class User implements UserDetails { // UserDetails 를 상속받아 인�
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 
     // 사용자의 id를 반환 (고유한 값)
