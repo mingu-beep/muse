@@ -37,3 +37,4 @@ out/
 .vscode/
 
 application-google.properties
+application-jwt.properties
