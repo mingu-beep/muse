@@ -1,7 +1,7 @@
 package min.project.muse.service;
 
 import lombok.RequiredArgsConstructor;
-import min.project.muse.config.jwt.TokenProvider;
+import min.project.muse.config.jwt.JwtTokenProvider;
 import min.project.muse.domain.user.User;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.time.Duration;
 @Service
 public class TokenService {
 
-    private final TokenProvider tokenProvider;
+    private final JwtTokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;
 

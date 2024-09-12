@@ -3,7 +3,13 @@ package min.project.muse.config;
 import lombok.RequiredArgsConstructor;
 import min.project.muse.config.jwt.JwtAuthenticationFilter;
 import min.project.muse.config.jwt.JwtTokenProvider;
+import min.project.muse.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import min.project.muse.config.oauth.OAuth2SuccessHandler;
+import min.project.muse.config.oauth.OAuth2UserCustomService;
+import min.project.muse.domain.refreshToken.RefreshTokenRepository;
 import min.project.muse.service.CustomUserDetailsService;
+import min.project.muse.service.OAuth2UserService;
+import min.project.muse.service.UserService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +37,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final OAuth2UserCustomService oAuth2UserCustomService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final OAuth2UserService oAuth2UserService;
 
     @Bean
     public WebSecurityCustomizer configure() throws Exception {
@@ -40,6 +49,7 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
+    // for using JWT
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
 
@@ -49,6 +59,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // JWT 를 사용하기 때문에 세션을 사용하지 않음
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> {
                     // 해당 API 요청에 대해서는 모든 요청을 허가
                     request.requestMatchers(
@@ -61,8 +72,33 @@ public class SecurityConfig {
                     // 이 밖의 모든 요청에 대해서는 인증을 필요로 한다는 설정
                     request.anyRequest().authenticated();
                 })
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository()))
+                        .userInfoEndpoint(userinfoEndpoint -> userinfoEndpoint.userService(oAuth2UserCustomService))
+                        .successHandler(oAuth2SuccessHandler())
+                )
                 // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행한다.
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class).build();
+    }
+
+    @Bean
+    public OAuth2SuccessHandler oAuth2SuccessHandler() {
+        return new OAuth2SuccessHandler(jwtTokenProvider,
+                refreshTokenRepository,
+                oAuth2AuthorizationRequestBasedOnCookieRepository(),
+                oAuth2UserService
+        );
+    }
+
+    @Bean
+    public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
+        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
+    }
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter(jwtTokenProvider);
     }
 
     @Bean

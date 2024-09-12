@@ -7,17 +7,17 @@ import io.jsonwebtoken.security.SecurityException;
 import io.netty.handler.codec.base64.Base64;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.JwtToken;
+import min.project.muse.domain.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -27,15 +27,42 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
+    // Value annotation 을 사용하지 않고 secret_key 등 properties에 설정한 값을 불러옴
     private final Key key;
+    private final String issuer;
 
-    public JwtTokenProvider(@Value("${jwt.secret_key}") String secretKey) {
+    public JwtTokenProvider(@Value("${jwt.secret_key}") String secretKey, @Value("${jwt.issuer}") String issuer) {
+
+        this.issuer = issuer;
+
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public String generateToken(User user, Duration expiredAt) {
+
+        log.info("---------------- generate 1");
+        Date now = new Date();
+        return makeToken(new Date(now.getTime() + expiredAt.toMillis()), user);
+    }
+
+    public String makeToken(Date expiry, User user) {
+        Date now = new Date();
+
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // 헤더 type : JWT
+                .setIssuer(issuer)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .setSubject(user.getUsername())
+                .claim("auth", user.getAuthorities())
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     // User 정보를 저장하고 Access Token, Refresh Token 을 생성하는 메서드
     public JwtToken generateToken(Authentication authentication) {
+        log.info("---------------- generate 2");
 
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
@@ -84,13 +111,16 @@ public class JwtTokenProvider {
 
         // UserDetails 객체를 만들어서 Authentication return
         // UserDetails: interface, User: UserDetails를 구현한 class
-        UserDetails principle = new User(claims.getSubject(), "", authorities); // 구현 필요
+
+        log.info("claim.subject = {}", claims.getSubject());
+
+        UserDetails principle = new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities); // 구현 필요
         return new UsernamePasswordAuthenticationToken(principle, "", authorities);
 
     }
 
     // 토큰 정보를 확인하는 메서드
-    public boolean validateToken(String token) {
+    public boolean validToken(String token) {
         try {
 
             Jwts.parserBuilder()

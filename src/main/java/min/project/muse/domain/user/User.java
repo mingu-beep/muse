@@ -40,8 +40,8 @@ public class User implements UserDetails { // UserDetails 를 상속받아 인�
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    public User update(String nickname) {
-        this.nickname = nickname;
+    public User update(String email) {
+        this.email = email;
 
         return this;
     }

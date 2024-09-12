@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 class TokenProviderTest {
 
     @Autowired
-    private TokenProvider tokenProvider;
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
     private UserRepository userRepository;
@@ -103,22 +103,4 @@ class TokenProviderTest {
         assertThat(((UserDetails) authentication.getPrincipal()).getUsername()).isEqualTo(username);
     }
 
-    // getUserId() 검증테스트
-    @DisplayName("getUserId() 토큰으로 유저 ID를 가져올 수 있다.")
-    @Test
-    void getUserId() {
-
-        // given : 클레임에 id, userId 를 추가하여 토큰을 생성한다.
-        Long userId = 1L;
-        String token = JwtFactory.builder()
-                .claims(Map.of("id", userId))
-                .build()
-                .createToken(jwtProperties);
-
-        // when : getUserId() 메서드를 호출해 유저 ID를 반환받는다.
-        Long userIdByToken = tokenProvider.getUserId(token);
-
-        // then : 반환받은 유저 id가 given 절에서 설정한 유저 ID값인 1과 같은지 확인한다.
-        assertThat(userIdByToken).isEqualTo(userId);
-    }
 }
