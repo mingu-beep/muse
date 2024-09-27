@@ -2,6 +2,8 @@ package min.project.muse.service;
 
 import lombok.RequiredArgsConstructor;
 import min.project.muse.config.jwt.JwtTokenProvider;
+import min.project.muse.config.jwt.TokenProperties;
+import min.project.muse.domain.refreshToken.RefreshTokenRepository;
 import min.project.muse.domain.user.User;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,11 @@ import java.time.Duration;
 @Service
 public class TokenService {
 
+    private final TokenProperties tokenProperties;
+
     private final JwtTokenProvider tokenProvider;
+
+    private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;
 
@@ -31,4 +37,17 @@ public class TokenService {
 
         return tokenProvider.generateToken(user, Duration.ofHours(2));
     }
+
+    private void saveRefreshToken(Long userId, String refreshToken) {
+
+    }
+
+    public String createRefreshToken(User user) {
+
+        String refreshToken = tokenProvider.generateToken(user, tokenProperties.getREFRESH_TOKEN_DURATION());
+
+        return "";
+    }
+
+
 }

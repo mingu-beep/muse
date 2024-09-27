@@ -10,7 +10,6 @@ import min.project.muse.util.SecurityUtil;
 import min.project.muse.web.dto.AddUserRequest;
 import min.project.muse.web.dto.LoginRequest;
 import min.project.muse.web.dto.UserDTO;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class UserApiController {
+public class UserController {
 
     private final UserService userService;
 
@@ -35,17 +34,14 @@ public class UserApiController {
         return "redirect:/login";
     }
 
-//    @ResponseBody
     @PostMapping("/login")
-    public String login(LoginRequest request) {
+    public String login(HttpServletRequest request, HttpServletResponse response, LoginRequest loginRequest) {
 
-        JwtToken jwtToken = userService.login(request);
+        JwtToken jwtToken = userService.login(loginRequest);
 
         return "redirect:/";
-//        return ResponseEntity.ok(jwtToken);
     }
 
-//    @ResponseBody
     @PostMapping("/signup")
     public String signUp(AddUserRequest request) {
 

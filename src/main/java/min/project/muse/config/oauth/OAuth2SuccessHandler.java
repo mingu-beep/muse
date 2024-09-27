@@ -7,11 +7,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.config.jwt.JwtTokenProvider;
+import min.project.muse.config.jwt.TokenProperties;
 import min.project.muse.domain.refreshToken.RefreshToken;
 import min.project.muse.domain.refreshToken.RefreshTokenRepository;
 import min.project.muse.domain.user.User;
 import min.project.muse.service.OAuth2UserService;
-import min.project.muse.service.UserService;
 import min.project.muse.util.CookieUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -27,29 +27,28 @@ import java.time.Duration;
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
-    public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
-    public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
     public static final String REDIRECT_PATH = "/";
+
+    private TokenProperties tokenProperties = new TokenProperties();
 
     private final JwtTokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository auth2AuthorizationRequestRepository;
-    private final OAuth2UserService userService;
+    private final OAuth2UserService oAuth2UserService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-        User user = userService.findByUsername((String) oAuth2User.getAttributes().get("username"));
+        User user = oAuth2UserService.findByUsername((String) oAuth2User.getAttributes().get("username"));
 
         // 리프레시 토큰 생성 -> 저장 -> 쿠키에 저장
-        String refreshToken = tokenProvider.generateToken(user, REFRESH_TOKEN_DURATION);
+        String refreshToken = tokenProvider.generateToken(user, tokenProperties.getREFRESH_TOKEN_DURATION());
         saveRefreshToken(user.getId(), refreshToken);
         addRefreshTokenToCookie(request, response, refreshToken);
 
         // 액세스 토큰 생성 -> 패스에 액세스 토큰 추가
-        String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
+        String accessToken = tokenProvider.generateToken(user, tokenProperties.getACCESS_TOKEN_DURATION());
         String targetUrl = getTargetUrl(accessToken);
 
         // 인증 관련 설정값, 쿠키 제거
@@ -71,9 +70,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     // 생성된 리프레시 토큰을 쿠키에 저장
     private void addRefreshTokenToCookie(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
-        int cookieMaxAge = (int) REFRESH_TOKEN_DURATION.toSeconds();
-        CookieUtil.deleteCookie(request, response, REFRESH_TOKEN_COOKIE_NAME);
-        CookieUtil.addCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, cookieMaxAge);
+        int cookieMaxAge = (int) tokenProperties.getREFRESH_TOKEN_DURATION().toSeconds();
+        CookieUtil.deleteCookie(request, response, tokenProperties.getREFRESH_TOKEN_COOKIE_NAME());
+        CookieUtil.addCookie(response, tokenProperties.getREFRESH_TOKEN_COOKIE_NAME(), refreshToken, cookieMaxAge);
     }
 
     // 인증 관련 설정값, 쿠키 제거
