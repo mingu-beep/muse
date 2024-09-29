@@ -1,6 +1,8 @@
 package min.project.muse.web.dto;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import min.project.muse.domain.user.Role;
 import min.project.muse.domain.user.User;
 
 import java.util.List;
@@ -11,18 +13,24 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
+@Slf4j
 public class AddUserRequest {
 
     private String username;
     private String password;
     private String email;
 
-    public User toEntity(String encodedPassword, List<String> roles) {
+    public User toEntity(String encodedPassword, Role role) {
+
+        log.info("username : {}", username);
+        log.info("username : {}", encodedPassword);
+        log.info("username : {}", role.getKey());
+
         return User.builder()
                 .username(username)
                 .password(encodedPassword)
                 .email(email)
-                .roles(roles)
+                .role(role)
                 .build();
     }
 }

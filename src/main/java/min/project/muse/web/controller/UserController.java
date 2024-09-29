@@ -22,25 +22,27 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/user")
-    public String signup(AddUserRequest request) {
-        userService.save(request);
-        return "redirect:/login";
-    }
+//    @PostMapping("/user")
+//    public String signup(AddUserRequest request) {
+//        userService.save(request);
+//        return "redirect:/login";
+//    }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/login";
-    }
 
-    @PostMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response, LoginRequest loginRequest) {
+// for JWT
+//    @GetMapping("/logout")
+//    public String logout(HttpServletRequest request, HttpServletResponse response) {
+//        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+//        return "redirect:/login";
+//    }
 
-        JwtToken jwtToken = userService.login(loginRequest);
-
-        return "redirect:/";
-    }
+//    @PostMapping("/login")
+//    public String login(HttpServletRequest request, HttpServletResponse response, LoginRequest loginRequest) {
+//
+//        JwtToken jwtToken = userService.login(loginRequest);
+//
+//        return "redirect:/";
+//    }
 
     @PostMapping("/signup")
     public String signUp(AddUserRequest request) {

@@ -2,6 +2,7 @@ package min.project.muse.config.oauth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import min.project.muse.domain.user.Role;
 import min.project.muse.domain.user.User;
 import min.project.muse.domain.user.UserRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -40,6 +41,7 @@ public class OAuth2UserCustomService  extends DefaultOAuth2UserService {
                 .orElse(User.builder()
                         .username(username)
                         .email(email)
+                        .role(Role.USER)
                         .build());
 
         return userRepository.save(user);
