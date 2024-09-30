@@ -39,6 +39,10 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(true)
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 new AntPathRequestMatcher("/img/**"),
