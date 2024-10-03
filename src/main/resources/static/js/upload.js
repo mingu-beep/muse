@@ -10,6 +10,8 @@ function imageChoose(obj) {
 	let reader = new FileReader();
 	reader.onload = (e) => {
 		$("#imageUploadPreview").attr("src", e.target.result);
+//		Uncaught ReferenceError: $ is not defined
+//            at reader.onload (upload.js:12:3)
 	}
 	reader.readAsDataURL(f); // 이 코드 실행시 reader.onload 실행됨.
 }
