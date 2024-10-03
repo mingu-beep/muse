@@ -8,7 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 public class PrincipalDetails  implements UserDetails { // UserDetails 를 상속받아 인증 객체로 사용
 

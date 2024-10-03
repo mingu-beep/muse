@@ -10,6 +10,8 @@ import min.project.muse.web.dto.PageDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class ApiController {
     private final PageService pageService;
 
     @GetMapping("/api/last")
-    public String get(String track, int page, Model model) {
+    public String get(@RequestParam("track") String track, @RequestParam("page") int page, Model model) {
 
         log.info("track = {}, page = {}", track, page);
         String response = lastApiService.get(track, page);

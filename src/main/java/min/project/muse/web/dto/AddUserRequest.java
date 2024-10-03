@@ -21,11 +21,6 @@ public class AddUserRequest {
     private String email;
 
     public User toEntity(String encodedPassword, Role role) {
-
-        log.info("username : {}", username);
-        log.info("username : {}", encodedPassword);
-        log.info("username : {}", role.getKey());
-
         return User.builder()
                 .username(username)
                 .password(encodedPassword)

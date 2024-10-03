@@ -51,7 +51,10 @@
             Login
           </button>
           <button sec:authorize="isAnonymous()" type="button" class="btn btn-warning" onclick="location.href='/signup';">Sign-up</button>
-          <button sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-light me-2" onclick="location.href='/logout';">
+          <button sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-light me-2" onclick="location.href='/upload';">
+            Upload
+          </button>
+          <button sec:authorize="isAuthenticated()" type="button" class="btn btn-warning" onclick="location.href='/logout';">
             Logout
           </button>
 

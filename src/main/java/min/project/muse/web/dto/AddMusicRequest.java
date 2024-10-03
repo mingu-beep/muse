@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 public class AddMusicRequest {
 
+    private String writer;
     private String title;
     private String artist;
     private MultipartFile image;
@@ -25,6 +26,7 @@ public class AddMusicRequest {
 
     public Music toEntity(String imageUrl) {
         return Music.builder()
+                .writer(writer)
                 .title(title)
                 .artist(artist)
                 .mood(mood)

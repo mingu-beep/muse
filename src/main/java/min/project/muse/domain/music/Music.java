@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Main Entity
  *
- * Field (id, title, singer, link, tags, describe, thumbnail)
+ * Field (id, title, artist, link, tags, describe, thumbnail)
  */
 
 @Entity

@@ -16,10 +16,11 @@ function imageChoose(obj) {
 
 function apiTrack() {
   const title = document.getElementById("title").value;
-  console.log(title)
+  console.log("title : " + title);
   var url = `/api/last?track=${title}&page=1`;
   var winWidth = 600;
   var winHeight = 500;
   var popupOption = "width=" + winWidth + ", height=" + winHeight;
+  console.log("url : " + url);
   window.open(url, "Title 기반 검색", popupOption);
 }
