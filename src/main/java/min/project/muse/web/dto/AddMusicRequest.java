@@ -3,6 +3,7 @@ package min.project.muse.web.dto;
 import jakarta.persistence.Convert;
 import lombok.*;
 import min.project.muse.domain.music.Music;
+import min.project.muse.domain.user.User;
 import min.project.muse.util.StringListConverter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,9 +25,9 @@ public class AddMusicRequest {
 
     private String details;
 
-    public Music toEntity(String imageUrl) {
+    public Music toEntity(String imageUrl, User user) {
         return Music.builder()
-                .writer(writer)
+                .user(user)
                 .title(title)
                 .artist(artist)
                 .mood(mood)

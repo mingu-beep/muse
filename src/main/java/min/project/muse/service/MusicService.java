@@ -3,6 +3,7 @@ package min.project.muse.service;
 import lombok.RequiredArgsConstructor;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
+import min.project.muse.domain.user.User;
 import min.project.muse.web.dto.AddMusicRequest;
 import min.project.muse.web.dto.UpdateMusicRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ public class MusicService {
     private final MusicRepository musicRepository;
 
     // 음악 추가 method
-    public Music save(AddMusicRequest request) {
+    public Music save(AddMusicRequest request, User user) {
 
         MultipartFile image = request.getImage();
 
@@ -41,7 +42,7 @@ public class MusicService {
             //
         }
 
-        return musicRepository.save(request.toEntity(filename));
+        return musicRepository.save(request.toEntity(filename, user));
     }
 
     // 음악 조회 method

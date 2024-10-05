@@ -2,6 +2,10 @@ package min.project.muse.domain.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import min.project.muse.domain.music.Music;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +36,9 @@ public class User { // UserDetails 를 상속받아 인증 객체로 사용
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Music> musicList;
 
     public User update(String email) {
         this.email = email;

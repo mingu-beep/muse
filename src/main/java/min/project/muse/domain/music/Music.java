@@ -2,6 +2,7 @@ package min.project.muse.domain.music;
 
 import jakarta.persistence.*;
 import lombok.*;
+import min.project.muse.domain.user.User;
 import min.project.muse.util.StringListConverter;
 
 import java.util.List;
@@ -40,8 +41,12 @@ public class Music {
     @Column(name = "details")
     private String details;
 
-    @Column(name = "writer", nullable = false)
-    private String writer;
+//    @Column(name = "writer", nullable = false)
+//    private String writer;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     public void update(String details) {
         this.details = details;

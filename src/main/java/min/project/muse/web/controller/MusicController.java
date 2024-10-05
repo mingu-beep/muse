@@ -26,8 +26,7 @@ public class MusicController {
     @PostMapping("/musics")
     public String addMusic(@AuthenticationPrincipal PrincipalDetails principal, AddMusicRequest request) {
 
-        request.setWriter(principal.getUsername());
-        Music saved = musicService.save(request);
+        Music saved = musicService.save(request, principal.getUser());
 
         log.info("MUSIC // image : {}", saved.getImage());
 
