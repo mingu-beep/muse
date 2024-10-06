@@ -44,13 +44,15 @@ public class WebSecurityConfig {
                         .maxSessionsPreventsLogin(true)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/img/**"),
-                                new AntPathRequestMatcher("/"),
-                                new AntPathRequestMatcher("/login"),
-                                new AntPathRequestMatcher("/signup")
-                        ).permitAll() // 누구나 접근이 가능하다.
-                        .anyRequest().authenticated() // 위에 설정한 url 이외의 요청에 대해서는 인증이 필요하다.
+                                .anyRequest().permitAll()
+//                        .requestMatchers(
+//                                new AntPathRequestMatcher("/img/**"),
+//                                new AntPathRequestMatcher("/"),
+//                                new AntPathRequestMatcher("/login"),
+//                                new AntPathRequestMatcher("/signup"),
+//                                new AntPathRequestMatcher("/user")
+//                        ).permitAll() // 누구나 접근이 가능하다.
+//                        .anyRequest().authenticated() // 위에 설정한 url 이외의 요청에 대해서는 인증이 필요하다.
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")

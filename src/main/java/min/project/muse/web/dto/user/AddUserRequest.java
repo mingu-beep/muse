@@ -1,11 +1,9 @@
-package min.project.muse.web.dto;
+package min.project.muse.web.dto.user;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.user.Role;
 import min.project.muse.domain.user.User;
-
-import java.util.List;
 
 @Getter
 @Setter

@@ -1,30 +1,16 @@
 package min.project.muse.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 //import min.project.muse.config.jwt.JwtTokenProvider;
-import min.project.muse.domain.JwtToken;
-import min.project.muse.domain.refreshToken.RefreshTokenRepository;
 import min.project.muse.domain.user.Role;
 import min.project.muse.domain.user.User;
 import min.project.muse.domain.user.UserRepository;
-import min.project.muse.web.dto.AddUserRequest;
-import min.project.muse.web.dto.LoginRequest;
-import min.project.muse.web.dto.UserDTO;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import min.project.muse.web.dto.user.AddUserRequest;
+import min.project.muse.web.dto.user.UserDTO;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor

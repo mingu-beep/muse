@@ -1,5 +1,6 @@
 package min.project.muse.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import min.project.muse.domain.music.Music;
@@ -37,7 +38,7 @@ public class User { // UserDetails 를 상속받아 인증 객체로 사용
     @Column(name = "role")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Music> musicList;
 
     public User update(String email) {

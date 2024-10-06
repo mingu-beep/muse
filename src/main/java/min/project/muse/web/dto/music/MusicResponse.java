@@ -1,4 +1,4 @@
-package min.project.muse.web.dto;
+package min.project.muse.web.dto.music;
 
 import lombok.Getter;
 import min.project.muse.domain.music.Music;

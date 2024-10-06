@@ -1,13 +1,10 @@
-package min.project.muse.web.dto;
+package min.project.muse.web.dto.music;
 
-import jakarta.persistence.Convert;
 import lombok.*;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.User;
-import min.project.muse.util.StringListConverter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor

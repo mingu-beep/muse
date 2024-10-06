@@ -1,4 +1,4 @@
-package min.project.muse.web.dto;
+package min.project.muse.web.dto.music;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

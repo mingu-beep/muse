@@ -1,6 +1,8 @@
 package min.project.muse.domain.music;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import min.project.muse.domain.user.User;
 import min.project.muse.util.StringListConverter;
@@ -41,10 +43,7 @@ public class Music {
     @Column(name = "details")
     private String details;
 
-//    @Column(name = "writer", nullable = false)
-//    private String writer;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 

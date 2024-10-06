@@ -1,4 +1,4 @@
-package min.project.muse.web.dto;
+package min.project.muse.web.dto.user;
 
 import lombok.*;
 import min.project.muse.domain.user.User;

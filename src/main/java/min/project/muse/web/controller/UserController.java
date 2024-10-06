@@ -1,19 +1,23 @@
 package min.project.muse.web.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import min.project.muse.domain.JwtToken;
+import min.project.muse.domain.music.Music;
+import min.project.muse.domain.user.PrincipalDetails;
+import min.project.muse.domain.user.User;
+import min.project.muse.service.MusicService;
 import min.project.muse.service.UserService;
 import min.project.muse.util.SecurityUtil;
-import min.project.muse.web.dto.AddUserRequest;
-import min.project.muse.web.dto.LoginRequest;
-import min.project.muse.web.dto.UserDTO;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import min.project.muse.web.dto.user.AddUserRequest;
+import min.project.muse.web.dto.user.UserDTO;
+import min.project.muse.web.dto.user.UserProfileResponse;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,10 +48,37 @@ public class UserController {
 //        return "redirect:/";
 //    }
 
-    @PostMapping("/signup")
+
+    @GetMapping("/user")
+    public String profile(@RequestParam("userId") long userId, Model model) {
+
+        log.info("###### user Id : {}", userId);
+
+        /**
+         * Profile page 에서 필요한 정보
+         *
+         * username, email, nickname, musiclist
+         * -> 이 정보만 담는 DTO를 생성하는게 좋다.
+         */
+
+        User userEntity = userService.findById(userId);
+
+        UserProfileResponse dto = UserProfileResponse.builder()
+                .username(userEntity.getUsername())
+                .email(userEntity.getEmail())
+                .nickname(userEntity.getNickname())
+                .musicList(userEntity.getMusicList())
+                .build();
+
+        model.addAttribute("dto", dto);
+
+        return "profile";
+    }
+
+    @PostMapping("/user")
     public String signUp(AddUserRequest request) {
 
-        log.info("######### {}", request.toString());
+        log.info("######### AddUserRequest {}", request.toString());
         UserDTO userDTO = userService.save(request);
 
         return "redirect:/";
