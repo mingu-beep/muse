@@ -35,6 +35,22 @@ public class MusicController {
         return "redirect:/";
     }
 
+    @ResponseBody
+    @DeleteMapping("/musics/{id}")
+    public ResponseEntity<Void> deleteMusic(@PathVariable("id") long musicId) {
+
+        log.info("%%%%%%% delete Music {}", musicId);
+        musicService.deleteById(musicId);
+        return ResponseEntity.accepted().build();
+    }
+
+    @ResponseBody
+    @PutMapping("/musics/{id}")
+    public ResponseEntity<Void> updateMusic (@PathVariable("id") long musicId) {
+
+        return ResponseEntity.accepted().build();
+    }
+
     @GetMapping("/musics")
     public ResponseEntity<List<MusicResponse>> findAllMusics() {
         List<MusicResponse> musics = musicService.findAll()
@@ -53,19 +69,19 @@ public class MusicController {
         return ResponseEntity.ok().body(new MusicResponse(music));
     }
 
-    @DeleteMapping("/musics/{id}")
-    public ResponseEntity<Void> deleteMusic(@PathVariable("id") long id) {
-        musicService.deleteById(id);
+//    @DeleteMapping("/musics/{id}")
+//    public ResponseEntity<Void> deleteMusic(@PathVariable("id") long id) {
+//        musicService.deleteById(id);
+//
+//        return ResponseEntity.ok().build();
+//    }
 
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping("/musics/{id}")
-    public ResponseEntity<Music> updateMusic(@PathVariable("id") long id, @RequestBody UpdateMusicRequest request) {
-
-        Music updateMusic = musicService.update(id, request);
-
-        return ResponseEntity.ok()
-                .body(updateMusic);
-    }
+//    @PutMapping("/musics/{id}")
+//    public ResponseEntity<Music> updateMusic(@PathVariable("id") long id, @RequestBody UpdateMusicRequest request) {
+//
+//        Music updateMusic = musicService.update(id, request);
+//
+//        return ResponseEntity.ok()
+//                .body(updateMusic);
+//    }
 }
