@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.*;
 import min.project.muse.domain.user.User;
 import min.project.muse.util.StringListConverter;
+import min.project.muse.web.dto.music.UpdateMusicRequest;
 
 import java.util.List;
 
@@ -47,8 +48,12 @@ public class Music {
     @JoinColumn(name = "userId")
     private User user;
 
-    public void update(String details) {
-        this.details = details;
+    public void update(UpdateMusicRequest updateDto, String filename) {
+        this.image = filename;
+        this.title = updateDto.getTitle();
+        this.artist = updateDto.getArtist();
+        this.mood = updateDto.getMood();
+        this.details = updateDto.getDetails();
     }
 
 }

@@ -5,6 +5,7 @@ import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.domain.user.User;
+import min.project.muse.util.MultipartFileUtil;
 import min.project.muse.web.dto.music.AddMusicRequest;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
@@ -35,16 +36,7 @@ public class MusicService {
     public Music save(AddMusicRequest request, User user) {
 
         MultipartFile image = request.getImage();
-
-        UUID uuid = UUID.randomUUID();
-        String filename = uuid + "_" + image.getOriginalFilename();
-        Path imageFilePath = Paths.get(uploadPath + filename);
-
-        try {
-            Files.write(imageFilePath, image.getBytes());
-        } catch (IOException e) {
-            //
-        }
+        String filename = MultipartFileUtil.saveImage(uploadPath, image);
 
         return musicRepository.save(request.toEntity(filename, user));
     }
@@ -89,7 +81,10 @@ public class MusicService {
     public Music update(long id, UpdateMusicRequest request) {
         Music music = musicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
-        music.update(request.getDetails());
+        MultipartFile image = request.getImage();
+        String filename = MultipartFileUtil.saveImage(uploadPath, image);
+
+        music.update(request, filename);
 
         return music;
     }

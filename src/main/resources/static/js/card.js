@@ -25,13 +25,6 @@ function deleteMusic(musicId) {
 }
 
 function updateMusic(musicId) {
-console.log("update Music id : " + musicId);
-    $.ajax({
-        type:'PUT',
-        url:`/musics/${musicId}`
-    }).done(res => {
-        console.log("success");
-    }).fail(err => {
-        console.log("fail");
-    });
+    console.log("update Music id : " + musicId);
+    location.href = `/musics/${musicId}`
 }

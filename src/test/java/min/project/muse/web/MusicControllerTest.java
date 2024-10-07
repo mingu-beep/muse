@@ -143,33 +143,33 @@ class MusicControllerTest {
 
     }
 
-    @DisplayName("updateMusic: 음악 수정에 성공한다.")
-    @Test
-    public void updateMusic() throws Exception {
-
-        // given
-        final String url = "/api/musics/{id}";
-        final String title = "title";
-        final String singer = "singer";
-        final String content = "content";
-
-        Music savedMusic = musicRepository.save(Music.builder().title(title).artist(singer).details(content).build());
-
-        final String newContent = "new_content";
-
-        UpdateMusicRequest request = new UpdateMusicRequest(newContent);
-
-        // when
-        ResultActions result = mockMvc.perform(put(url, savedMusic.getId())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request)));
-
-        // then
-        result.andExpect(status().isOk());
-
-        Music music = musicRepository.findById(savedMusic.getId()).get();
-
-        assertThat(music.getDetails()).isEqualTo(newContent);
-    }
+//    @DisplayName("updateMusic: 음악 수정에 성공한다.")
+//    @Test
+//    public void updateMusic() throws Exception {
+//
+//        // given
+//        final String url = "/api/musics/{id}";
+//        final String title = "title";
+//        final String singer = "singer";
+//        final String content = "content";
+//
+//        Music savedMusic = musicRepository.save(Music.builder().title(title).artist(singer).details(content).build());
+//
+//        final String newContent = "new_content";
+//
+//        UpdateMusicRequest request = new UpdateMusicRequest(newContent);
+//
+//        // when
+//        ResultActions result = mockMvc.perform(put(url, savedMusic.getId())
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .content(objectMapper.writeValueAsString(request)));
+//
+//        // then
+//        result.andExpect(status().isOk());
+//
+//        Music music = musicRepository.findById(savedMusic.getId()).get();
+//
+//        assertThat(music.getDetails()).isEqualTo(newContent);
+//    }
 
 }

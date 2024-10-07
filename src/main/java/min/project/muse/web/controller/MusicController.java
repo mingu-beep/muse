@@ -11,6 +11,7 @@ import min.project.muse.web.dto.music.UpdateMusicRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class MusicController {
 
     private final MusicService musicService;
 
+    // Create
     @PostMapping("/musics")
     public String addMusic(@AuthenticationPrincipal PrincipalDetails principal, AddMusicRequest request) {
 
@@ -35,6 +37,7 @@ public class MusicController {
         return "redirect:/";
     }
 
+    // Delete
     @ResponseBody
     @DeleteMapping("/musics/{id}")
     public ResponseEntity<Void> deleteMusic(@PathVariable("id") long musicId) {
@@ -44,11 +47,20 @@ public class MusicController {
         return ResponseEntity.accepted().build();
     }
 
-    @ResponseBody
-    @PutMapping("/musics/{id}")
-    public ResponseEntity<Void> updateMusic (@PathVariable("id") long musicId) {
+    @GetMapping("/musics/{id}")
+    public String updatePage(@PathVariable("id") long id, Model model) {
+        Music music = musicService.findById(id);
 
-        return ResponseEntity.accepted().build();
+        model.addAttribute("music", music);
+        return "updateMusic";
+    }
+
+    // Update
+    @PutMapping("/musics/{id}")
+    public String updateMusic (@PathVariable("id") long musicId, UpdateMusicRequest updateDto) {
+
+        musicService.update(musicId, updateDto);
+        return "redirect:/";
     }
 
     @GetMapping("/musics")
@@ -62,26 +74,4 @@ public class MusicController {
                 .body(musics);
     }
 
-    @GetMapping("/musics/{id}")
-    public ResponseEntity<MusicResponse> findMusic(@PathVariable("id") long id) {
-        Music music = musicService.findById(id);
-
-        return ResponseEntity.ok().body(new MusicResponse(music));
-    }
-
-//    @DeleteMapping("/musics/{id}")
-//    public ResponseEntity<Void> deleteMusic(@PathVariable("id") long id) {
-//        musicService.deleteById(id);
-//
-//        return ResponseEntity.ok().build();
-//    }
-
-//    @PutMapping("/musics/{id}")
-//    public ResponseEntity<Music> updateMusic(@PathVariable("id") long id, @RequestBody UpdateMusicRequest request) {
-//
-//        Music updateMusic = musicService.update(id, request);
-//
-//        return ResponseEntity.ok()
-//                .body(updateMusic);
-//    }
 }

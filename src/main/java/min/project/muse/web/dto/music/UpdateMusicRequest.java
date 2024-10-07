@@ -1,12 +1,28 @@
 package min.project.muse.web.dto.music;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Convert;
+import lombok.*;
+import min.project.muse.domain.music.Music;
+import min.project.muse.util.StringListConverter;
+import org.springframework.web.multipart.MultipartFile;
 
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.List;
+
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
 public class UpdateMusicRequest {
+
+    private MultipartFile image;
+    private String title;
+    private String artist;
     private String details;
+
+    @Convert(converter = StringListConverter.class)
+    private List<String> mood;
+
+
 }
