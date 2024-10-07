@@ -3,8 +3,10 @@ package min.project.muse.service;
 import lombok.RequiredArgsConstructor;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
+import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.domain.user.User;
 import min.project.muse.web.dto.music.AddMusicRequest;
+import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,6 +55,27 @@ public class MusicService {
 
     public Music findById(long id) {
         return musicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+    }
+
+    public List<ShowMusicResponse> findMusicList(PrincipalDetails principal) {
+
+        List<ShowMusicResponse> dtoList = new ArrayList<>();
+
+        long loginUserId = principal != null ? principal.getUser().getId() : -1;
+
+        for (Music music : musicRepository.findAll()) {
+            dtoList.add(ShowMusicResponse.builder()
+                            .user(music.getUser())
+                            .id(music.getId())
+                            .title(music.getTitle())
+                            .artist(music.getArtist())
+                            .mood(music.getMood())
+                            .image(music.getImage())
+                            .owner(music.getUser().getId() == loginUserId)
+                            .build());
+        }
+
+        return dtoList;
     }
 
     // 음악 삭제 method
