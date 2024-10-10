@@ -34,6 +34,12 @@ public class User { // UserDetails 를 상속받아 인증 객체로 사용
     @Column(name = "nickname", unique = true)
     private String nickname;
 
+    @Column(name = "profileImage")
+    private String profileImage;
+
+    @Column(name = "bio")
+    private String bio;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;

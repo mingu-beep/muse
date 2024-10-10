@@ -36,7 +36,7 @@
                     <ul class="dropdown-menu text-small" style="">
                         <li><a class="dropdown-item" href="/upload">New music...</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" th:href="@{/user(userId=${#authentication.principal.user.id})}">Profile</a></li>
+                        <li><a class="dropdown-item" th:href="@{/user/{userId}(userId=${#authentication.principal.user.id})}">Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                     </ul>
