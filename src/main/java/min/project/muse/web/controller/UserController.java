@@ -9,14 +9,18 @@ import min.project.muse.domain.user.User;
 import min.project.muse.service.MusicService;
 import min.project.muse.service.UserService;
 import min.project.muse.util.SecurityUtil;
+import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.user.AddUserRequest;
+import min.project.muse.web.dto.user.UpdateUserProfileRequest;
 import min.project.muse.web.dto.user.UserDTO;
 import min.project.muse.web.dto.user.UserProfileResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -49,8 +53,8 @@ public class UserController {
 //    }
 
 
-    @GetMapping("/user")
-    public String profile(@RequestParam("userId") long userId, Model model) {
+    @GetMapping("/user/{userId}")
+    public String profile(@PathVariable("userId") long userId, @AuthenticationPrincipal PrincipalDetails principal, Model model) {
 
         log.info("###### user Id : {}", userId);
 
@@ -63,11 +67,31 @@ public class UserController {
 
         User userEntity = userService.findById(userId);
 
+        List<ShowMusicResponse> dtoList = new ArrayList<>();
+
+        boolean owner = principal != null && principal.getUser().getId() == userId;
+
+        for (Music music : userEntity.getMusicList()) {
+            dtoList.add(ShowMusicResponse.builder()
+                    .user(music.getUser())
+                    .id(music.getId())
+                    .title(music.getTitle())
+                    .artist(music.getArtist())
+                    .mood(music.getMood())
+                    .image(music.getImage())
+                    .owner(owner)
+                    .build());
+        }
+
         UserProfileResponse dto = UserProfileResponse.builder()
+                .profileImage(userEntity.getProfileImage())
+                .userId(userEntity.getId())
                 .username(userEntity.getUsername())
                 .email(userEntity.getEmail())
                 .nickname(userEntity.getNickname())
-                .musicList(userEntity.getMusicList())
+                .musicList(dtoList)
+                .musicCount(dtoList.size())
+                .owner(owner)
                 .build();
 
         model.addAttribute("dto", dto);
@@ -84,9 +108,23 @@ public class UserController {
         return "redirect:/";
     }
 
+    @PutMapping("/user/{userId}")
+    public String updateProfile(@PathVariable("userId") long userId, UpdateUserProfileRequest data) {
+        log.info("##### userId : {}", userId);
+        log.info("##### data : {}", data.toString());
+
+        User updateUserProfile = userService.updateUserProfile(userId, data);
+
+        log.info("##### updateUserProfile : {}", updateUserProfile.toString());
+
+        return "redirect:/user/" + userId;
+
+    }
+
     @ResponseBody
     @PostMapping("/auth/test")
     public String test() {
         return SecurityUtil.getCurrentUsername();
     }
+
 }

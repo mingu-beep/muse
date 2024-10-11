@@ -6,16 +6,25 @@ import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.user.Role;
 import min.project.muse.domain.user.User;
 import min.project.muse.domain.user.UserRepository;
+import min.project.muse.util.MultipartFileUtil;
 import min.project.muse.web.dto.user.AddUserRequest;
+import min.project.muse.web.dto.user.UpdateUserProfileRequest;
 import min.project.muse.web.dto.user.UserDTO;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
+    @Value("${file.path}")
+    private String uploadPath;
 
     private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -65,5 +74,17 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    }
+
+    @Transactional
+    public User updateUserProfile(long userId, UpdateUserProfileRequest request) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalIdentifierException("not found: " + userId));
+
+        MultipartFile profileImage = request.getProfileImage();
+        String filename = MultipartFileUtil.saveImage(uploadPath, profileImage);
+
+        return user.update(filename, request);
+
     }
 }

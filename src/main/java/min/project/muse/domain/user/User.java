@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import min.project.muse.domain.music.Music;
+import min.project.muse.web.dto.user.UpdateUserProfileRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,12 @@ public class User { // UserDetails 를 상속받아 인증 객체로 사용
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Music> musicList;
 
-    public User update(String email) {
-        this.email = email;
+    public User update(String profileImage, UpdateUserProfileRequest dto) {
+
+        this.profileImage = profileImage;
+        this.nickname = dto.getNickname();
+        this.email = dto.getEmail();
+        this.bio = dto.getBio();
 
         return this;
     }

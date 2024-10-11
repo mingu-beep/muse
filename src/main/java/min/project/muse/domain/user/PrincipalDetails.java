@@ -26,6 +26,11 @@ public class PrincipalDetails  implements UserDetails { // UserDetails 를 상�
         });
         return null;
     }
+
+    public String getProfileImage() {
+        return user.getProfileImage();
+    }
+
     // 사용자의 id를 반환 (고유한 값)
     @Override
     public String getUsername() {
