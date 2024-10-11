@@ -31,6 +31,10 @@ public class PrincipalDetails  implements UserDetails { // UserDetails 를 상�
         return user.getProfileImage();
     }
 
+    public long getUserId() {
+        return user.getId();
+    }
+
     // 사용자의 id를 반환 (고유한 값)
     @Override
     public String getUsername() {
