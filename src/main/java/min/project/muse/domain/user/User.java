@@ -15,7 +15,6 @@ import java.util.List;
 @Getter
 @Entity
 @Builder
-@ToString
 public class User { // UserDetails 를 상속받아 인증 객체로 사용
 
     @Id

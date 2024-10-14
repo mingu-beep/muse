@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor // final 이 붙거나 @NotNull이 붙은 필드의 생성자 추가
 @Service // 빈으로 등록
@@ -23,6 +22,9 @@ public class MusicService {
 
     @Value("${file.path}")
     private String uploadPath;
+
+    @Value("${search.type}")
+    private String searchType;
 
     private final MusicRepository musicRepository;
 
@@ -81,5 +83,21 @@ public class MusicService {
         music.update(request, filename);
 
         return music;
+    }
+
+    // 음악 검색 method
+    public Map<String, List<Music>> search(String type, String keyword) {
+
+        String[] types = searchType.split(",");
+        Map<String, List<Music>> res = new HashMap<>();
+
+        if (type.equals("all") || type.equals("title"))
+            res.put("title", musicRepository.findByTitleContaining(keyword));
+        if (type.equals("all") || type.equals("artist"))
+            res.put("artist", musicRepository.findByArtistContaining(keyword));
+//        if (type.equals("all") || type.equals("mood"))
+//            res.put("mood", musicRepository.findByMoodsContaining(keyword));
+
+        return res;
     }
 }

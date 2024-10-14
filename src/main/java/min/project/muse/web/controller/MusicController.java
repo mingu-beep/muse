@@ -8,6 +8,7 @@ import min.project.muse.service.MusicService;
 import min.project.muse.web.dto.music.AddMusicRequest;
 import min.project.muse.web.dto.music.MusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -45,9 +46,25 @@ public class MusicController {
 
     }
 
+    @Value("${search.type}")
+    private String searchType;
+
     @GetMapping
-    public String search(@RequestParam("type") String type, @RequestParam("keyword") String keyword) {
+    public String search(@RequestParam("type") String type, @RequestParam("keyword") String keyword, Model model) {
         log.info("@#### search type : {}, keyword : {}", type, keyword);
+
+        Map<String, List<Music>> search = musicService.search(type, keyword);
+
+        for (String target : searchType.split(",")) {
+            if(target.equals("all") || target.equals(type)) {
+
+                for (Music music : search.get(target)) {
+                    log.info("{} // {}", target, music.toString());
+                }
+
+                model.addAttribute(target, search.get(target));
+            }
+        }
 
         return "search";
     }

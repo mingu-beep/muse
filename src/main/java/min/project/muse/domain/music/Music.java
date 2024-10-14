@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder // AllArgsConstructor 가 필요하다.
 public class Music {
 
