@@ -9,16 +9,15 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Builder
+@Data
 public class AddMusicRequest {
 
     private String writer;
     private String title;
     private String artist;
     private MultipartFile image;
-    private List<String> mood;
+    private List<String> moods;
 
     private String details;
 
@@ -27,7 +26,7 @@ public class AddMusicRequest {
                 .user(user)
                 .title(title)
                 .artist(artist)
-                .mood(mood)
+                .moods(moods)
                 .details(details)
                 .image(imageUrl)
                 .build();

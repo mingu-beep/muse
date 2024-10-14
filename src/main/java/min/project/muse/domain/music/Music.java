@@ -1,8 +1,6 @@
 package min.project.muse.domain.music;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.*;
 import min.project.muse.domain.user.User;
 import min.project.muse.util.StringListConverter;
@@ -18,8 +16,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder // AllArgsConstructor 가 필요하다.
 public class Music {
 
@@ -39,7 +37,7 @@ public class Music {
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "mood")
-    private List<String> mood;
+    private List<String> moods;
 
     @Column(name = "details")
     private String details;
@@ -52,7 +50,7 @@ public class Music {
         this.image = filename;
         this.title = updateDto.getTitle();
         this.artist = updateDto.getArtist();
-        this.mood = updateDto.getMood();
+        this.moods = updateDto.getMoods();
         this.details = updateDto.getDetails();
     }
 

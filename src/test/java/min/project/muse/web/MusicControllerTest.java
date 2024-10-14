@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.web.dto.music.AddMusicRequest;
-import min.project.muse.web.dto.music.UpdateMusicRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,7 +61,7 @@ class MusicControllerTest {
                 .title(title)
                 .artist(artist)
                 .details(details)
-                .mood(mood)
+                .moods(mood)
                 .build();
 
         final String requestBody = objectMapper.writeValueAsString(musicRequest);

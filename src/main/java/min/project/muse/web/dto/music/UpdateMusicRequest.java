@@ -22,7 +22,7 @@ public class UpdateMusicRequest {
     private String details;
 
     @Convert(converter = StringListConverter.class)
-    private List<String> mood;
+    private List<String> moods;
 
 
 }

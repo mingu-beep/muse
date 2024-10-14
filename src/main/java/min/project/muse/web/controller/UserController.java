@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.domain.user.User;
-import min.project.muse.service.MusicService;
 import min.project.muse.service.UserService;
 import min.project.muse.util.SecurityUtil;
 import min.project.muse.web.dto.music.ShowMusicResponse;
@@ -14,7 +13,6 @@ import min.project.muse.web.dto.user.AddUserRequest;
 import min.project.muse.web.dto.user.UpdateUserProfileRequest;
 import min.project.muse.web.dto.user.UserDTO;
 import min.project.muse.web.dto.user.UserProfileResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,7 +75,7 @@ public class UserController {
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())
-                    .mood(music.getMood())
+                    .mood(music.getMoods())
                     .image(music.getImage())
                     .owner(owner)
                     .build());

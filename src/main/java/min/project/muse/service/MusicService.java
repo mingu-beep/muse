@@ -14,14 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @RequiredArgsConstructor // final 이 붙거나 @NotNull이 붙은 필드의 생성자 추가
 @Service // 빈으로 등록
@@ -62,7 +56,7 @@ public class MusicService {
                             .id(music.getId())
                             .title(music.getTitle())
                             .artist(music.getArtist())
-                            .mood(music.getMood())
+                            .mood(music.getMoods())
                             .image(music.getImage())
                             .owner(music.getUser().getId() == loginUserId)
                             .build());

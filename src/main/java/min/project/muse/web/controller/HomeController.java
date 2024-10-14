@@ -30,8 +30,8 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/upload")
-    public String uploadPage() {
-        return "upload";
-    }
+//    @GetMapping("/upload")
+//    public String uploadPage() {
+//        return "upload";
+//    }
 }

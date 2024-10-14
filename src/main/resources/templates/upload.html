@@ -27,6 +27,7 @@
           action="/musics"
           method="post"
           enctype="multipart/form-data"
+          th:object="${music}"
         >
           <div class="row upload-form-detail">
 
@@ -36,7 +37,7 @@
                 type="text"
                 class="form-control"
                 id="title"
-                name="title"
+                th:field="*{title}"
               />
             </div>
             <div
@@ -54,15 +55,24 @@
                 type="text"
                 class="form-control"
                 id="artist"
-                name="artist"
+                th:field="*{artist}"
               />
             </div>
           </div>
           <div class="row upload-form-detail">
-            <label for="mood" class="col-form-label">MOOD</label>
-            <div>
-              <input type="text" class="form-control" id="mood" name="mood" />
+              <label class="col-form-label">MOOD</label>
+              <div></div>
+          </div>
+          <div class="col">
+            <div class="form-check form-check-inline" th:each="mood: ${moods}">
+              <input class="form-check-input"
+                     th:field="*{moods}"
+                     th:value="${mood.key}" type="checkbox">
+              <label class="form-check-label"
+                     th:for="${#ids.prev('moods')}"
+                     th:text="${mood.value}">1</label>
             </div>
+
           </div>
           <div class="row upload-form-detail">
             <label for="details" class="col-form-label">DETAILS</label>
@@ -71,18 +81,24 @@
                 type="text"
                 class="form-control"
                 id="details"
-                name="details"
+                th:field="*{details}"
               />
             </div>
           </div>
-          <input type="file" name="image" id="image" onchange="imageChoose(this)" />
-          <div class="upload-img">
-            <img
-              src="/img/white.jpg"
-              alt="미리보기"
-              id="imageUploadPreview"
-            />
-          </div>
+            <div class="row upload-form-detail">
+                <label for="image" class="col-form-label">IMAGE</label>
+                <div>
+                    <input type="file" name="image" id="image" th:field="*{image}" onchange="imageChoose(this)" />
+                    <div class="upload-img">
+                        <img
+                                src="/img/white.jpg"
+                                alt="미리보기"
+                                id="imageUploadPreview"
+                        />
+                    </div>
+                </div>
+            </div>
+
 
           <button class="btn btn-primary w-100 py-2 my-2">
             UPLOAD
