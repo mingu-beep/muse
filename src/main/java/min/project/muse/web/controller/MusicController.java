@@ -45,6 +45,12 @@ public class MusicController {
 
     }
 
+    @GetMapping
+    public String search(@RequestParam("type") String type, @RequestParam("keyword") String keyword) {
+        log.info("@#### search type : {}, keyword : {}", type, keyword);
+
+        return "search";
+    }
 
     @GetMapping("/upload")
     public String uploadPage(Model model) {

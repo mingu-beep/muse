@@ -18,9 +18,23 @@
                     <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
                 </ul>
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                <form class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3" role="search" method="GET" action="/musics">
+
+                    <div class="input-group">
+                        <select class="form-select" id="inputGroupSelect02" name="type">
+                            <option selected value="all">All</option>
+                            <option value="title">Title</option>
+                            <option value="artist">Artist</option>
+                            <option value="mood">Mood</option>
+                        </select>
+                        <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="keyword">
+
+<!--                        <input type="text" class="form-control" aria-label="Text input with dropdown button">-->
+                    </div>
+
                 </form>
+
+
 
                 <div sec:authorize="isAnonymous()" class="text-end">
                     <button type="button" class="btn btn-light me-2" onclick="location.href='/login';">
