@@ -1,8 +1,10 @@
-package min.project.muse.web;
+package min.project.muse.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
+import min.project.muse.service.MusicService;
 import min.project.muse.web.dto.music.AddMusicRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,11 +19,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc // MockMvc 생성 및 자동 구성
 class MusicControllerTest {
@@ -38,11 +43,26 @@ class MusicControllerTest {
     @Autowired
     MusicRepository musicRepository;
 
+    @Autowired
+    MusicService musicService;
+
     @BeforeEach
     public void setMockMvc() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
         musicRepository.deleteAll();
+    }
+
+    @DisplayName("searchMusic : 음악 검색에 성공한다.")
+    @Test
+    public void searchMusic() {
+
+        Map<String, List<Music>> search = musicService.search("all", "asdf");
+
+        assertThat(search.size()).isEqualTo(2);
+        assertThat(search.containsKey("title")).isTrue();
+        assertThat(search.containsKey("artist")).isTrue();
+
     }
 
     @DisplayName("addMusic: 음악 추가에 성공한다.")

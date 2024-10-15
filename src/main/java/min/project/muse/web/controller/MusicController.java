@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.service.MusicService;
+import min.project.muse.util.MusicConvertUtil;
 import min.project.muse.web.dto.music.AddMusicRequest;
 import min.project.muse.web.dto.music.MusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
@@ -50,22 +51,25 @@ public class MusicController {
     private String searchType;
 
     @GetMapping
-    public String search(@RequestParam("type") String type, @RequestParam("keyword") String keyword, Model model) {
+    public String search(@AuthenticationPrincipal PrincipalDetails principal, @RequestParam("type") String type, @RequestParam("keyword") String keyword, Model model) {
         log.info("@#### search type : {}, keyword : {}", type, keyword);
 
         Map<String, List<Music>> search = musicService.search(type, keyword);
 
         for (String target : searchType.split(",")) {
-            if(target.equals("all") || target.equals(type)) {
 
-                for (Music music : search.get(target)) {
-                    log.info("{} // {}", target, music.toString());
-                }
-
-                model.addAttribute(target, search.get(target));
+            if(type.equals("all") || target.equals(type)) {
+                model.addAttribute("_" + target, keyword);
+                model.addAttribute(target,
+                        MusicConvertUtil.convertToMusicDto(
+                                search.get(target),
+                                principal != null ? principal.getUserId() : -1
+                        ));
             }
         }
 
+
+        model.addAttribute("all", type.equals("all"));
         return "search";
     }
 

@@ -24,7 +24,7 @@
           <p class="card-text" th:text="${music.title}">Title</p>
           <p class="card-text" th:text="${music.artist}">artist</p>
           <div class="d-flex justify-content-start align-items-center">
-            <small class="text-body-secondary me-2" th:text="${music.mood}">Tags</small>
+            <small class="text-body-secondary me-2" th:text="${music.moods}">Tags</small>
           </div>
             <div class="d-flex justify-content-end align-items-center">
                 <small class="text-body-secondary me-2" th:text="${music.user.username}">Username</small>
@@ -54,7 +54,7 @@
 
               <div class="music_detail_info">
                 <p th:text="${music.artist}"></p>
-                <p th:text="${music.mood}"></p>
+                <p th:text="${music.moods}"></p>
                 <p th:text="${music.details}"></p>
               </div>
             </div>

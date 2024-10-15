@@ -9,6 +9,41 @@
 <!-- MAIN -->
 <main>
 
+    <div th:unless="${title==null}" class="container px-4 py-5" id="title">
+        <h2 class="pb-2 border-bottom">Result for title</h2>
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <!-- CARD -->
+                    <div class="col" th:each="music : ${title}">
+                        <div th:replace="/fragment/card :: card(${music})"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${all}" class="d-grid gap-2">
+            <a class="btn btn-outline-secondary" type="button" th:href="@{/musics(type='title',keyword=${_title})}">More...</a>
+        </div>
+
+    </div>
+
+    <div th:unless="${artist==null}" class="container px-4 py-5" id="artist">
+        <h2 class="pb-2 border-bottom">Result for artist</h2>
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <!-- CARD -->
+                    <div class="col" th:each="music : ${artist}">
+                        <div th:replace="/fragment/card :: card(${music})"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${all}" class="d-grid gap-2">
+            <a class="btn btn-outline-secondary" type="button" th:href="@{/musics(type='artist',keyword=${_artist})}">More...</a>
+        </div>
+    </div>
+
 </main>
 
 <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->

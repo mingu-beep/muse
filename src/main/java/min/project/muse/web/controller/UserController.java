@@ -75,7 +75,7 @@ public class UserController {
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())
-                    .mood(music.getMoods())
+                    .moods(music.getMoods())
                     .image(music.getImage())
                     .owner(owner)
                     .build());

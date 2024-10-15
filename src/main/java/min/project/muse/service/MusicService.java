@@ -6,6 +6,7 @@ import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.domain.user.User;
 import min.project.muse.util.MultipartFileUtil;
+import min.project.muse.util.MusicConvertUtil;
 import min.project.muse.web.dto.music.AddMusicRequest;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
@@ -48,23 +49,21 @@ public class MusicService {
 
     public List<ShowMusicResponse> findMusicList(PrincipalDetails principal) {
 
-        List<ShowMusicResponse> dtoList = new ArrayList<>();
-
         long loginUserId = principal != null ? principal.getUser().getId() : -1;
 
-        for (Music music : musicRepository.findAll()) {
-            dtoList.add(ShowMusicResponse.builder()
-                            .user(music.getUser())
-                            .id(music.getId())
-                            .title(music.getTitle())
-                            .artist(music.getArtist())
-                            .mood(music.getMoods())
-                            .image(music.getImage())
-                            .owner(music.getUser().getId() == loginUserId)
-                            .build());
-        }
+//        for (Music music : musicRepository.findAll()) {
+//            dtoList.add(ShowMusicResponse.builder()
+//                            .user(music.getUser())
+//                            .id(music.getId())
+//                            .title(music.getTitle())
+//                            .artist(music.getArtist())
+//                            .moods(music.getMoods())
+//                            .image(music.getImage())
+//                            .owner(music.getUser().getId() == loginUserId)
+//                            .build());
+//        }
 
-        return dtoList;
+        return MusicConvertUtil.convertToMusicDto(musicRepository.findAll(), loginUserId);
     }
 
     // 음악 삭제 method
