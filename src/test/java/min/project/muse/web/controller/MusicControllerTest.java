@@ -75,7 +75,7 @@ class MusicControllerTest {
         final String title = "title";
         final String artist = "artist";
         final String details = "details";
-        final List<String> mood = List.of("a", "b", "c");
+        final String mood = "a,b,c";
         
         final AddMusicRequest musicRequest = AddMusicRequest.builder()
                 .title(title)

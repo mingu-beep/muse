@@ -41,7 +41,7 @@ public class MusicController {
         moods.put("romantic",       "로맨틱");
         moods.put("mysterious",     "신비");
         moods.put("energetic",      "에너제틱");
-        moods.put("hopful",         "희망");
+        moods.put("hopeful",         "희망");
 
         return moods;
 

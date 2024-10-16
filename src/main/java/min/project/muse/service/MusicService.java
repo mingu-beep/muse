@@ -1,6 +1,7 @@
 package min.project.muse.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.domain.user.PrincipalDetails;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
+@Slf4j
 @RequiredArgsConstructor // final 이 붙거나 @NotNull이 붙은 필드의 생성자 추가
 @Service // 빈으로 등록
 public class MusicService {
@@ -76,9 +78,7 @@ public class MusicService {
     public Music update(long id, UpdateMusicRequest request) {
         Music music = musicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
-        MultipartFile image = request.getImage();
-        String filename = MultipartFileUtil.saveImage(uploadPath, image);
-
+        String filename = request.getImage().isEmpty() ? music.getImage() : MultipartFileUtil.saveImage(uploadPath, request.getImage());
         music.update(request, filename);
 
         return music;
