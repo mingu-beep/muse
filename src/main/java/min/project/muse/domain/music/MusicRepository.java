@@ -11,5 +11,5 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
 
     List<Music> findByArtistContaining(String keyword);
 
-//    List<Music> findByMoodsContaining(String keyword);
+    List<Music> findByMoodsContaining(String keyword);
 }

@@ -21,8 +21,8 @@ public class UpdateMusicRequest {
     private String artist;
     private String details;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> moods;
+//    @Convert(converter = StringListConverter.class)
+    private String moods;
 
 
 }

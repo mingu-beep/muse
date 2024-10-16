@@ -5,8 +5,6 @@ import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.User;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,7 +15,7 @@ public class AddMusicRequest {
     private String title;
     private String artist;
     private MultipartFile image;
-    private List<String> moods;
+    private String moods;
 
     private String details;
 

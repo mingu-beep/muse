@@ -3,10 +3,7 @@ package min.project.muse.domain.music;
 import jakarta.persistence.*;
 import lombok.*;
 import min.project.muse.domain.user.User;
-import min.project.muse.util.StringListConverter;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
-
-import java.util.List;
 
 /**
  * Main Entity
@@ -36,9 +33,9 @@ public class Music {
     @Column(name = "artist")
     private String artist;
 
-    @Convert(converter = StringListConverter.class)
+//    @Convert(converter = StringListConverter.class)
     @Column(name = "mood")
-    private List<String> moods;
+    private String moods;
 
     @Column(name = "details")
     private String details;

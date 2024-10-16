@@ -18,8 +18,8 @@ public class ShowMusicResponse {
     private String title;
     private String artist;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> moods;
+//    @Convert(converter = StringListConverter.class)
+    private String moods;
 
     private String details;
 

@@ -44,6 +44,23 @@
         </div>
     </div>
 
+    <div th:unless="${mood==null}" class="container px-4 py-5" id="mood">
+        <h2 class="pb-2 border-bottom">Result for mood</h2>
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <!-- CARD -->
+                    <div class="col" th:each="music : ${mood}">
+                        <div th:replace="/fragment/card :: card(${music})"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${all}" class="d-grid gap-2">
+            <a class="btn btn-outline-secondary" type="button" th:href="@{/musics(type='mood',keyword=${_mood})}">More...</a>
+        </div>
+    </div>
+
 </main>
 
 <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->

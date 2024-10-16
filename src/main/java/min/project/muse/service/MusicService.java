@@ -94,8 +94,8 @@ public class MusicService {
             res.put("title", musicRepository.findByTitleContaining(keyword));
         if (type.equals("all") || type.equals("artist"))
             res.put("artist", musicRepository.findByArtistContaining(keyword));
-//        if (type.equals("all") || type.equals("mood"))
-//            res.put("mood", musicRepository.findByMoodsContaining(keyword));
+        if (type.equals("all") || type.equals("mood"))
+            res.put("mood", musicRepository.findByMoodsContaining(keyword));
 
         return res;
     }

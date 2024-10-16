@@ -59,6 +59,8 @@ public class MusicController {
         for (String target : searchType.split(",")) {
 
             if(type.equals("all") || target.equals(type)) {
+                log.info("{} :: size : {}", target, search.get(target).size());
+
                 model.addAttribute("_" + target, keyword);
                 model.addAttribute(target,
                         MusicConvertUtil.convertToMusicDto(
