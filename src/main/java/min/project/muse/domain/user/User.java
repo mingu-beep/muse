@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @Builder
-public class User { // UserDetails 를 상속받아 인증 객체로 사용
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
