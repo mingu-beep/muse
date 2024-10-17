@@ -3,6 +3,7 @@ package min.project.muse.util;
 import min.project.muse.domain.music.Music;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class MusicConvertUtil {
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())
-                    .moods(music.getMoods())
+                    .moods(Arrays.stream(music.getMoods().split(",")).toList())
                     .image(music.getImage())
                     .owner(music.getUser().getId() == loginUserId)
                     .build());

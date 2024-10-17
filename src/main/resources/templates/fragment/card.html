@@ -24,7 +24,11 @@
           <p class="card-text" th:text="${music.title}">Title</p>
           <p class="card-text" th:text="${music.artist}">artist</p>
           <div class="d-flex justify-content-start align-items-center">
-            <small class="text-body-secondary me-2" th:text="${music.moods}">Tags</small>
+            <small class="text-body-secondary me-2">
+              <a class="link-dark"
+                 th:each="mood : ${music.moods}"
+                 th:text="|#${mood} |" th:href="@{/musics(type='mood',keyword=${mood})}"></a>
+            </small>
           </div>
             <div class="d-flex justify-content-end align-items-center">
                 <small class="text-body-secondary me-2">

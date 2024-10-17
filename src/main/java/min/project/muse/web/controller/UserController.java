@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -75,7 +76,7 @@ public class UserController {
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())
-                    .moods(music.getMoods())
+                    .moods(Arrays.stream(music.getMoods().split(",")).toList())
                     .image(music.getImage())
                     .owner(owner)
                     .build());

@@ -19,7 +19,7 @@ public class ShowMusicResponse {
     private String artist;
 
 //    @Convert(converter = StringListConverter.class)
-    private String moods;
+    private List<String> moods;
 
     private String details;
 
