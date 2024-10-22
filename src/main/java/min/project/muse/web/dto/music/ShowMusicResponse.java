@@ -27,4 +27,7 @@ public class ShowMusicResponse {
 
     private Boolean owner;
 
+    private Boolean likeStatus;
+    private Integer likeCount;
+
 }

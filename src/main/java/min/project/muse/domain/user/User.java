@@ -3,6 +3,7 @@ package min.project.muse.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import min.project.muse.domain.likes.Likes;
 import min.project.muse.domain.music.Music;
 import min.project.muse.web.dto.user.UpdateUserProfileRequest;
 

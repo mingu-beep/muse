@@ -54,3 +54,38 @@ function updateProfile(userId) {
     });
 
 }
+
+function toggleLike(musicId) {
+	let likeIcon = $(`#likesInModal${musicId}`);
+
+	if (likeIcon.hasClass("fa-solid")) { // unlikes
+
+	    $.ajax({
+	        type: "delete",
+	        url: `/api/musics/${musicId}/likes`
+	    }).done( res => {
+	        console.log("좋아요 삭제 성공", res);
+	        likeIcon.removeClass("fa-solid");
+            likeIcon.addClass("fa-regular");
+            likeIcon.css('color', '')
+	    }).fail( err => {
+	        console.log("좋아요 삭제 실패", err);
+	    })
+
+	} else { // Likes
+
+	    $.ajax({
+            type: "post",
+            url: `/api/musics/${musicId}/likes`
+        }).done( res => {
+            console.log("좋아요 추가 성공", res);
+            likeIcon.removeClass("fa-regular");
+            likeIcon.addClass("fa-solid");
+            likeIcon.css('color', 'red');
+        }).fail( err => {
+            console.log("좋아요 추가 실패", err);
+        })
+
+	}
+
+}

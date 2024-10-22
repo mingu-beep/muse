@@ -3,6 +3,7 @@ package min.project.muse.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import min.project.muse.domain.likes.Likes;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.domain.user.User;
