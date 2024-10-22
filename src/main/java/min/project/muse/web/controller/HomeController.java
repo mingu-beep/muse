@@ -25,13 +25,20 @@ public class HomeController {
 
         List<ShowMusicResponse> musics = musicService.findMusicList(principalDetails);
 
+        model.addAttribute("menu", "home");
         model.addAttribute("musics", musics);
 
         return "home";
     }
 
-//    @GetMapping("/upload")
-//    public String uploadPage() {
-//        return "upload";
-//    }
+    @GetMapping("/popular")
+    public String popular(Model model, @AuthenticationPrincipal PrincipalDetails principal) {
+
+        List<ShowMusicResponse> popularMusicList = musicService.findPopularMusicList(principal);
+
+        model.addAttribute("menu", "popular");
+        model.addAttribute("musics", popularMusicList);
+
+        return "home";
+    }
 }

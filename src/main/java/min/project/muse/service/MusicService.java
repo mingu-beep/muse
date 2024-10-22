@@ -51,21 +51,16 @@ public class MusicService {
 
     public List<ShowMusicResponse> findMusicList(PrincipalDetails principal) {
 
-        long loginUserId = principal != null ? principal.getUser().getId() : -1;
-
-//        for (Music music : musicRepository.findAll()) {
-//            dtoList.add(ShowMusicResponse.builder()
-//                            .user(music.getUser())
-//                            .id(music.getId())
-//                            .title(music.getTitle())
-//                            .artist(music.getArtist())
-//                            .moods(music.getMoods())
-//                            .image(music.getImage())
-//                            .owner(music.getUser().getId() == loginUserId)
-//                            .build());
-//        }
+        long loginUserId = principal != null ? principal.getUserId() : -1;
 
         return MusicConvertUtil.convertToMusicDto(musicRepository.findAll(), loginUserId);
+    }
+
+    public List<ShowMusicResponse> findPopularMusicList(PrincipalDetails principal) {
+
+        long loginUserId = principal != null ? principal.getUserId() : -1;
+
+        return MusicConvertUtil.convertToMusicDto(musicRepository.selectPopular(), loginUserId);
     }
 
     // 음악 삭제 method

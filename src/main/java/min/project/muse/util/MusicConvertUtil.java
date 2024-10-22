@@ -19,10 +19,6 @@ public class MusicConvertUtil {
         for (Music music : musics) {
             List<Likes> likes = music.getLikes();
 
-            log.info("------------ like count : {}", likes.size());
-            if(!likes.isEmpty())
-                log.info("------------ like owner? : {}", likes.get(0).getUser().getId() == loginUserId);
-
             res.add(ShowMusicResponse.builder()
                     .user(music.getUser())
                     .id(music.getId())
