@@ -48,7 +48,7 @@
       </div>
 
       <div class="modal fade" th:id="|musicModal${music.id}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="${music.title}">Modal title</h1>
@@ -85,18 +85,48 @@
                 <p th:text="${music.moods}"></p>
                 <p th:text="${music.details}"></p>
               </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-between">
 
-              <div th:if="${music.owner}">
-                <button type="button" class="btn btn-primary" th:onclick="|updateMusic(${music.id})|">Update</button>
-                <button type="button" class="btn btn-danger" th:onclick="|checkDelete(${music.id})|">Delete</button>
+              <hr/>
+              <div class="music_comment_body">
+                  <div class="mb-3">
+                      <label th:for="|commentInput${music.id}|" class="form-label">Comment</label>
+
+                      <div class="input-group mb-3">
+                          <input type="text" class="form-control" aria-describedby="button-addon2">
+                          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Comment</button>
+                      </div>
+
+                      <hr/>
+
+                      <div class="comment_item_list" th:id="|comment_item_list${music.id}|">
+                          <div th:id="|comment_item${music.id}|" class="bg-body-tertiary p-3">
+                              <div th:id="|comment_item_header${music.id}|" class="d-flex justify-content-between">
+                                  <p>username</p>
+                                  <p>writing time</p>
+                              </div>
+
+                              <p th:id="|comment_item_body_content${music.id}" class="p-3">content</p>
+
+                              <div class="d-flex justify-content-end">
+                                  <a href="#" class="p-2"><i class="fa-solid fa-pen"></i></a>
+                                  <a href="#" class="p-2"><i class="fa-solid fa-x"></i></a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
-              <div th:unless="${music.owner}">
-                <p></p>
-              </div>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
             </div>
+              <div class="modal-footer d-flex justify-content-between">
+                  <div th:if="${music.owner}">
+                    <button type="button" class="btn btn-primary" th:onclick="|updateMusic(${music.id})|">Update</button>
+                    <button type="button" class="btn btn-danger" th:onclick="|checkDelete(${music.id})|">Delete</button>
+                  </div>
+                  <div th:unless="${music.owner}">
+                    <p></p>
+                  </div>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
           </div>
         </div>
       </div>
