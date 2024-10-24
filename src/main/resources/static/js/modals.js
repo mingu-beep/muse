@@ -117,3 +117,15 @@ function saveComment(musicId) {
         console.log("err : " + err);
     });
 }
+
+function deleteComment(commentId) {
+
+    $.ajax({
+        type: "delete",
+        url: `/api/comments/${commentId}`
+    }).done(res => {
+        console.log("res : ", res);
+    }).fail(err => {
+        console.log("err : ", err);
+    })
+}

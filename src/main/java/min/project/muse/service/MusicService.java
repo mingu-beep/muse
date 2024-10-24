@@ -7,7 +7,7 @@ import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.domain.user.User;
 import min.project.muse.util.MultipartFileUtil;
-import min.project.muse.util.MusicConvertUtil;
+import min.project.muse.util.ConvertUtil;
 import min.project.muse.web.dto.music.AddMusicRequest;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
@@ -53,14 +53,14 @@ public class MusicService {
 
         long loginUserId = principal != null ? principal.getUserId() : -1;
 
-        return MusicConvertUtil.convertToMusicDto(musicRepository.findAll(), loginUserId);
+        return ConvertUtil.convertToMusicDto(musicRepository.findAll(), loginUserId);
     }
 
     public List<ShowMusicResponse> findPopularMusicList(PrincipalDetails principal) {
 
         long loginUserId = principal != null ? principal.getUserId() : -1;
 
-        return MusicConvertUtil.convertToMusicDto(musicRepository.selectPopular(), loginUserId);
+        return ConvertUtil.convertToMusicDto(musicRepository.selectPopular(), loginUserId);
     }
 
     // 음악 삭제 method

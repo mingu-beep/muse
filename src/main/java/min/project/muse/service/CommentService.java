@@ -6,6 +6,7 @@ import min.project.muse.domain.comment.CommentRepository;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.User;
 import min.project.muse.domain.user.UserRepository;
+import min.project.muse.util.ConvertUtil;
 import min.project.muse.web.dto.comment.SaveCommentRequest;
 import min.project.muse.web.dto.comment.ShowCommentResponse;
 import org.springframework.stereotype.Service;
@@ -35,14 +36,7 @@ public class CommentService {
 
         Comment commentEntity = commentRepository.save(comment);
 
-        return ShowCommentResponse.builder()
-                .id(commentEntity.getId())
-                .content(commentEntity.getContent())
-                .createDate(commentEntity.getCreateDate())
-                .userId(commentEntity.getUser().getId())
-                .username(commentEntity.getUser().getUsername())
-                .musicId(commentEntity.getMusic().getId())
-                .build();
+        return ConvertUtil.convertToCommentDto(commentEntity, userId);
 
     }
 

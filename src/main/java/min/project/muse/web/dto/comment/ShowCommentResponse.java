@@ -20,4 +20,6 @@ public class ShowCommentResponse {
 
     private long musicId;
 
+    private boolean owner;
+
 }

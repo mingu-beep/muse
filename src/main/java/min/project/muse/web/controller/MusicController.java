@@ -5,9 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.service.MusicService;
-import min.project.muse.util.MusicConvertUtil;
+import min.project.muse.util.ConvertUtil;
 import min.project.muse.web.dto.music.AddMusicRequest;
-import min.project.muse.web.dto.music.MusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +61,7 @@ public class MusicController {
 
                 model.addAttribute("_" + target, keyword);
                 model.addAttribute(target,
-                        MusicConvertUtil.convertToMusicDto(
+                        ConvertUtil.convertToMusicDto(
                                 search.get(target),
                                 principal != null ? principal.getUserId() : -1
                         ));

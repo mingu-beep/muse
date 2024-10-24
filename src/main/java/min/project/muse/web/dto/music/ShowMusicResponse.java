@@ -3,8 +3,10 @@ package min.project.muse.web.dto.music;
 import jakarta.persistence.Convert;
 import lombok.Builder;
 import lombok.Getter;
+import min.project.muse.domain.comment.Comment;
 import min.project.muse.domain.user.User;
 import min.project.muse.util.StringListConverter;
+import min.project.muse.web.dto.comment.ShowCommentResponse;
 
 import java.util.List;
 
@@ -29,5 +31,7 @@ public class ShowMusicResponse {
 
     private Boolean likeStatus;
     private Integer likeCount;
+
+    private List<ShowCommentResponse> comments;
 
 }

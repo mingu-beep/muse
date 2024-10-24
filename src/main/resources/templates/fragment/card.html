@@ -91,7 +91,7 @@
                   <div class="mb-3">
                       <label th:for="|commentInput${music.id}|" class="form-label">Comment</label>
 
-                      <div class="input-group mb-3">
+                      <div sec:authorize="isAuthenticated()" class="input-group mb-3">
                           <input th:id="|commentInput${music.id}|" type="text" class="form-control" aria-describedby="button-addon2">
                           <button class="btn btn-outline-secondary" type="button" id="button-addon2" th:onclick="|saveComment(${music.id})|">Comment</button>
                       </div>
@@ -99,17 +99,20 @@
                       <hr/>
 
                       <div class="comment_item_list" th:id="|comment_item_list${music.id}|">
-                          <div th:id="|comment_item${music.id}|" class="bg-body-tertiary p-3">
-                              <div th:id="|comment_item_header${music.id}|" class="d-flex justify-content-between">
-                                  <p>username</p>
-                                  <p>writing time</p>
-                              </div>
+                          <div th:if="${music.comments.size() > 0}" th:id="|comment_item${music.id}|" class="bg-body-tertiary p-3">
+                              <div th:each="comment : ${music.comments}">
+                                  <div th:id="|comment_item_header${comment.id}|" class="d-flex justify-content-between">
+                                      <p th:text="${comment.username}">username</p>
+                                      <p th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}">writing time</p>
+                                  </div>
 
-                              <p th:id="|comment_item_body_content${music.id}" class="p-3">content</p>
+                                  <p th:id="|comment_item_body_content${comment.id}|" class="p-3"
+                                     th:text="${comment.content}">content</p>
 
-                              <div class="d-flex justify-content-end">
-                                  <a href="#" class="p-2"><i class="fa-solid fa-pen"></i></a>
-                                  <a href="#" class="p-2"><i class="fa-solid fa-x"></i></a>
+                                  <div th:if="${comment.owner}" class="d-flex justify-content-end">
+                                      <a href="#" class="p-2"><i class="fa-solid fa-pen"></i></a>
+                                      <a class="p-2" th:onclick="|deleteComment(${comment.id})|"><i class="fa-solid fa-x"></i></a>
+                                  </div>
                               </div>
                           </div>
                       </div>
