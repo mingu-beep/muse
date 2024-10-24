@@ -92,8 +92,8 @@
                       <label th:for="|commentInput${music.id}|" class="form-label">Comment</label>
 
                       <div class="input-group mb-3">
-                          <input type="text" class="form-control" aria-describedby="button-addon2">
-                          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Comment</button>
+                          <input th:id="|commentInput${music.id}|" type="text" class="form-control" aria-describedby="button-addon2">
+                          <button class="btn btn-outline-secondary" type="button" id="button-addon2" th:onclick="|saveComment(${music.id})|">Comment</button>
                       </div>
 
                       <hr/>

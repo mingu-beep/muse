@@ -2,10 +2,12 @@ package min.project.muse.domain.music;
 
 import jakarta.persistence.*;
 import lombok.*;
+import min.project.muse.domain.comment.Comment;
 import min.project.muse.domain.likes.Likes;
 import min.project.muse.domain.user.User;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -36,7 +39,6 @@ public class Music {
     @Column(name = "artist")
     private String artist;
 
-//    @Convert(converter = StringListConverter.class)
     @Column(name = "mood")
     private String moods;
 
@@ -49,6 +51,17 @@ public class Music {
 
     @OneToMany(mappedBy = "music", fetch = FetchType.LAZY)
     private List<Likes> likes;
+
+    @OneToMany(mappedBy = "music", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+    @Column
+    private LocalDateTime createDate;
+
+    @PrePersist
+    public void createdDate() {
+        this.createDate = LocalDateTime.now();
+    }
 
     public void update(UpdateMusicRequest updateDto, String filename) {
 

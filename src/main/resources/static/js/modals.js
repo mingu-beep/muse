@@ -89,3 +89,31 @@ function toggleLike(musicId) {
 	}
 
 }
+
+function saveComment(musicId) {
+
+    let content = $(`#commentInput${musicId}`);
+
+    console.log("content : ", content.val());
+
+    let data = {
+        musicId: musicId,
+        content: content.val()
+    };
+
+    console.log("data : ", data);
+    console.log("stringify : ", JSON.stringify(data));
+
+
+    $.ajax({
+        type: "post",
+        url: "/api/comments",
+        data: JSON.stringify(data),
+        contentType:"application/json; charset=utf-8",
+        dataType: "json"
+    }).done(res => {
+        console.log("res : ", res);
+    }).fail(err => {
+        console.log("err : " + err);
+    });
+}
