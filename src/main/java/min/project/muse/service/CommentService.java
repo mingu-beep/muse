@@ -12,6 +12,8 @@ import min.project.muse.web.dto.comment.ShowCommentResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class CommentService {
@@ -37,6 +39,19 @@ public class CommentService {
         Comment commentEntity = commentRepository.save(comment);
 
         return ConvertUtil.convertToCommentDto(commentEntity, userId);
+
+    }
+
+    @Transactional
+    public ShowCommentResponse updateComment(long commentId, SaveCommentRequest commentDto) {
+
+        Comment commentEntity = commentRepository.findById(commentId).orElseThrow(() -> {
+            throw new IllegalArgumentException("존재하지 않는 댓글입니다.");
+        });
+
+        commentEntity.setContent(commentDto.getContent());
+
+        return ConvertUtil.convertToCommentDto(commentEntity, commentEntity.getUser().getId());
 
     }
 

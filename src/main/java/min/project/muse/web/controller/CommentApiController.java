@@ -31,6 +31,16 @@ public class CommentApiController {
 
     }
 
+    @PutMapping("/{commentId}")
+    public ResponseEntity<?> updateComment(@PathVariable("commentId") long commentId, @RequestBody SaveCommentRequest commentDto) {
+
+        log.info("comment update !!!!!");
+
+        ShowCommentResponse dto = commentService.updateComment(commentId, commentDto);
+
+        return ResponseEntity.ok(dto);
+    }
+
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComments(@PathVariable("commentId") long commentId) {
 

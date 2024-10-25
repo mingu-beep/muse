@@ -98,9 +98,8 @@
 
                       <hr/>
 
-                      <div class="comment_item_list" th:id="|comment_item_list${music.id}|">
-                          <div th:if="${music.comments.size() > 0}" th:id="|comment_item${music.id}|" class="bg-body-tertiary p-3">
-                              <div th:each="comment : ${music.comments}">
+                      <div class="bg-body-tertiary p-3" th:id="|comment_item_list${music.id}|">
+                              <div th:each="comment : ${music.comments}" th:id="|comment_item${comment.id}|">
                                   <div th:id="|comment_item_header${comment.id}|" class="d-flex justify-content-between">
                                       <p th:text="${comment.username}">username</p>
                                       <p th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}">writing time</p>
@@ -110,11 +109,11 @@
                                      th:text="${comment.content}">content</p>
 
                                   <div th:if="${comment.owner}" class="d-flex justify-content-end">
-                                      <a href="#" class="p-2"><i class="fa-solid fa-pen"></i></a>
+                                      <a class="p-2" th:onclick="|showUpdateForm(${comment.musicId}, ${comment.id})|"><i class="fa-solid fa-pen"></i></a>
                                       <a class="p-2" th:onclick="|deleteComment(${comment.id})|"><i class="fa-solid fa-x"></i></a>
                                   </div>
+                                  <hr/>
                               </div>
-                          </div>
                       </div>
                   </div>
               </div>

@@ -94,16 +94,10 @@ function saveComment(musicId) {
 
     let content = $(`#commentInput${musicId}`);
 
-    console.log("content : ", content.val());
-
     let data = {
         musicId: musicId,
         content: content.val()
     };
-
-    console.log("data : ", data);
-    console.log("stringify : ", JSON.stringify(data));
-
 
     $.ajax({
         type: "post",
@@ -113,6 +107,34 @@ function saveComment(musicId) {
         dataType: "json"
     }).done(res => {
         console.log("res : ", res);
+        let commentList = $(`#comment_item_list${musicId}`)
+
+        // 현재 날짜와 시간을 가져오기
+        const currentDate = new Date();
+
+        // 날짜와 시간을 문자열로 포맷팅
+        const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
+
+        let newComment = `
+            <div th:id="comment_item${res.id}">
+                <div th:id="comment_item_header${res.id}" class="d-flex justify-content-between">
+                    <p>${res.username}</p>
+                    <p>${formattedDate}</p>
+                </div>
+
+                <p th:id="comment_item_body_content${res.id}" class="p-3"
+                   >${res.content}</p>
+
+                <div class="d-flex justify-content-end">
+                    <a class="p-2" th:onclick="showUpdateForm(${res.musicId}, ${res.id})"><i class="fa-solid fa-pen"></i></a>
+                    <a class="p-2" th:onclick="deleteComment(${res.id})"><i class="fa-solid fa-x"></i></a>
+                </div>
+            </div>
+        `
+
+        commentList.append(newComment);
+        content.val("");
+
     }).fail(err => {
         console.log("err : " + err);
     });
@@ -125,7 +147,56 @@ function deleteComment(commentId) {
         url: `/api/comments/${commentId}`
     }).done(res => {
         console.log("res : ", res);
+        $(`#comment_item${commentId}`).remove();
+
     }).fail(err => {
         console.log("err : ", err);
     })
+}
+
+function showUpdateForm(musicId, commentId) {
+
+    let updateInputGroup =
+    `
+    <div class="input-group mb-3" id="updateFormGroup${commentId}">
+          <input id="updateInput${commentId}" type="text" class="form-control" aria-describedby="update-form">
+          <button class="btn btn-outline-secondary" type="button" id="update-form" onclick="updateComment(${musicId}, ${commentId})">Update</button>
+          <div class="d-flex justify-content-end">
+                <a class="p-2" onclick="removeUpdateForm(${commentId})"><i class="fa-solid fa-x"></i></a>
+          </div>
+    </div>
+    `;
+
+    let commentItem = $(`#comment_item${commentId}`)
+    commentItem.append(updateInputGroup);
+
+}
+
+function removeUpdateForm(commentId) {
+    $(`#updateFormGroup${commentId}`).remove();
+}
+
+function updateComment(musicId, commentId) {
+
+    let content = $(`#updateInput${commentId}`);
+
+    let data = {
+        musicId: musicId,
+        content: content.val()
+    };
+
+    $.ajax({
+        type: "put",
+        url: `/api/comments/${commentId}`,
+        data: JSON.stringify(data),
+        contentType:"application/json; charset=utf-8",
+        dataType: "json"
+    }).done(res => {
+        console.log("res : ", res);
+        $(`#comment_item_body_content${commentId}`).text(res.content);
+        $(`#updateFormGroup${commentId}`).remove();
+
+    }).fail(err => {
+        console.log("err : " + err);
+    });
 }
