@@ -2,6 +2,7 @@ package min.project.muse.config;
 
 import lombok.RequiredArgsConstructor;
 import min.project.muse.config.oauth.OAuth2UserCustomService;
+import min.project.muse.domain.user.Role;
 import min.project.muse.service.CustomUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

@@ -3,6 +3,7 @@ package min.project.muse.web.controller;
 import lombok.RequiredArgsConstructor;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.PrincipalDetails;
+import min.project.muse.domain.user.Role;
 import min.project.muse.service.MusicService;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +24,13 @@ public class HomeController {
 
 //        List<Music> musics = musicService.findAll(); // **** check ****
 
+        // admin 일 경우 admin 
+        if(principalDetails != null) {
+            if (principalDetails.getUser().getRole().equals(Role.ADMIN)) {
+                return "redirect:/admin";
+            }
+        }
+
         List<ShowMusicResponse> musics = musicService.findMusicList(principalDetails);
 
         model.addAttribute("menu", "home");
@@ -41,4 +49,5 @@ public class HomeController {
 
         return "home";
     }
+
 }
