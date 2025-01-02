@@ -1,6 +1,7 @@
 package min.project.muse.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.comment.Comment;
@@ -11,6 +12,9 @@ import min.project.muse.web.dto.comment.SaveCommentRequest;
 import min.project.muse.web.dto.comment.ShowCommentResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -22,8 +26,27 @@ public class CommentApiController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<?> saveComments(@RequestBody SaveCommentRequest commentDto,
-                                          @AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity<?> saveComments(
+            @RequestBody @Valid SaveCommentRequest commentDto, BindingResult bindingResult
+            , @AuthenticationPrincipal PrincipalDetails principal
+            , Model model) {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder sb = new StringBuilder();
+
+            bindingResult.getAllErrors().forEach(objectError -> {
+                FieldError field = (FieldError) objectError;
+                String message = field.getDefaultMessage();
+
+                log.error("saveComments // field : {}", field.getField());
+                log.error("saveComments // message : {}", message);
+
+                sb.append("saveComments // field : " + field.getField());
+                sb.append("saveComments // message : " + message);
+            });
+
+            return ResponseEntity.badRequest().body(sb.toString());
+        }
 
         ShowCommentResponse responseDto = commentService.saveComment(commentDto, principal.getUserId());
 
