@@ -1,5 +1,6 @@
 package min.project.muse.web.dto.music;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.User;
@@ -12,9 +13,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class AddMusicRequest {
 
     private String writer;
+
+    @NotBlank
     private String title;
+
+    @NotBlank
     private String artist;
+
+    @NotBlank
     private MultipartFile image;
+
+    @NotBlank
     private String moods;
 
     private String details;
