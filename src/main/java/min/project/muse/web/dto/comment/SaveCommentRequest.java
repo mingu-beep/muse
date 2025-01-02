@@ -1,5 +1,6 @@
 package min.project.muse.web.dto.comment;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @NoArgsConstructor
@@ -10,6 +11,8 @@ import lombok.*;
 public class SaveCommentRequest {
 
     private long musicId;
+
+    @NotBlank
     private String content;
 
 }
