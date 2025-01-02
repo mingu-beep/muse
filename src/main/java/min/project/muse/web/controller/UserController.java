@@ -1,6 +1,7 @@
 package min.project.muse.web.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.music.Music;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -100,7 +103,27 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String signUp(AddUserRequest request) {
+    public String signUp(@Valid AddUserRequest request, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder sb = new StringBuilder();
+
+            bindingResult.getAllErrors().forEach(objectError -> {
+                FieldError field = (FieldError) objectError;
+                String defaultMessage = field.getDefaultMessage();
+
+                log.error("signUp // field : {}", field.getField());
+                log.error("singUp // message : {}", defaultMessage);
+
+                sb.append("field : " + field.getField());
+                sb.append("message : " + defaultMessage);
+            });
+
+            model.addAttribute("errors", sb.toString());
+
+            return "redirect:/signup";
+
+        }
 
         log.info("######### AddUserRequest {}", request.toString());
         UserDTO userDTO = userService.save(request);
@@ -109,7 +132,22 @@ public class UserController {
     }
 
     @PutMapping("/user/{userId}")
-    public String updateProfile(@PathVariable("userId") long userId, UpdateUserProfileRequest data) {
+    public String updateProfile(@PathVariable("userId") long userId
+            , @Valid UpdateUserProfileRequest data, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder sb = new StringBuilder();
+
+            bindingResult.getAllErrors().forEach(objectError -> {
+                FieldError field = (FieldError) objectError;
+                String message = field.getDefaultMessage();
+
+                log.error("updateProfile // field : {}", field.getField());
+                log.error("updateProfile // message : {}", message);
+
+            });
+        }
+
         log.info("##### userId : {}", userId);
         log.info("##### data : {}", data.toString());
 
