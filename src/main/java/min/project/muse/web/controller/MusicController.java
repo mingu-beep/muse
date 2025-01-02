@@ -1,5 +1,6 @@
 package min.project.muse.web.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.music.Music;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -83,7 +86,29 @@ public class MusicController {
 
     // Create
     @PostMapping
-    public String addMusic(@AuthenticationPrincipal PrincipalDetails principal, AddMusicRequest request) {
+    public String addMusic(@AuthenticationPrincipal PrincipalDetails principal
+            , @Valid AddMusicRequest request, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder sb = new StringBuilder();
+
+            bindingResult.getAllErrors().forEach(objectError -> {
+
+                FieldError field = (FieldError) objectError;
+                String message = field.getObjectName();
+
+                log.error("addMusic // field : {}", field.getField());
+                log.error("addMusic // message : {}", message);
+
+
+                sb.append("addMusic // field : " + field.getField());
+                sb.append("addMusic // message : " + message);
+            });
+
+            model.addAttribute("errors", sb.toString());
+
+            return "redirect:/musics/upload";
+        }
 
         Music saved = musicService.save(request, principal.getUser());
 
@@ -115,7 +140,25 @@ public class MusicController {
 
     // Update
     @PutMapping("/{id}")
-    public String updateMusic (@PathVariable("id") long musicId, UpdateMusicRequest updateDto) {
+    public String updateMusic(@PathVariable("id") long musicId
+            , @Valid UpdateMusicRequest updateDto, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder sb = new StringBuilder();
+
+            bindingResult.getAllErrors().forEach(objectError -> {
+                FieldError field = (FieldError) objectError;
+                String message = field.getDefaultMessage();
+
+                log.error("updateMusic // field : {}", field.getField());
+                log.error("updateMusic // message : {}", message);
+
+                sb.append("updateMusic // field : " + field.getField());
+                sb.append("updateMusic // message : " + message);
+            });
+
+            model.addAttribute("errors", sb.toString());
+        }
 
         musicService.update(musicId, updateDto);
         return "redirect:/";
