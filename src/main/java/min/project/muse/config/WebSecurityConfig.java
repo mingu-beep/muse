@@ -51,6 +51,7 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup"),
                                 new AntPathRequestMatcher("/user/**", "GET"),
+                                new AntPathRequestMatcher("/user", "POST"),
                                 new AntPathRequestMatcher("/musics", "GET"),
                                 new AntPathRequestMatcher("/popular")
                         ).permitAll() // 누구나 접근이 가능하다.

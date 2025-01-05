@@ -89,26 +89,27 @@ public class MusicController {
     public String addMusic(@AuthenticationPrincipal PrincipalDetails principal
             , @Valid AddMusicRequest request, BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            StringBuilder sb = new StringBuilder();
-
-            bindingResult.getAllErrors().forEach(objectError -> {
-
-                FieldError field = (FieldError) objectError;
-                String message = field.getObjectName();
-
-                log.error("addMusic // field : {}", field.getField());
-                log.error("addMusic // message : {}", message);
-
-
-                sb.append("addMusic // field : " + field.getField());
-                sb.append("addMusic // message : " + message);
-            });
-
-            model.addAttribute("errors", sb.toString());
-
-            return "redirect:/musics/upload";
-        }
+//        AOP로 처리
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder sb = new StringBuilder();
+//
+//            bindingResult.getAllErrors().forEach(objectError -> {
+//
+//                FieldError field = (FieldError) objectError;
+//                String message = field.getObjectName();
+//
+//                log.error("addMusic // field : {}", field.getField());
+//                log.error("addMusic // message : {}", message);
+//
+//
+//                sb.append("addMusic // field : " + field.getField());
+//                sb.append("addMusic // message : " + message);
+//            });
+//
+//            model.addAttribute("errors", sb.toString());
+//
+//            return "redirect:/musics/upload";
+//        }
 
         Music saved = musicService.save(request, principal.getUser());
 
@@ -143,22 +144,23 @@ public class MusicController {
     public String updateMusic(@PathVariable("id") long musicId
             , @Valid UpdateMusicRequest updateDto, BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            StringBuilder sb = new StringBuilder();
-
-            bindingResult.getAllErrors().forEach(objectError -> {
-                FieldError field = (FieldError) objectError;
-                String message = field.getDefaultMessage();
-
-                log.error("updateMusic // field : {}", field.getField());
-                log.error("updateMusic // message : {}", message);
-
-                sb.append("updateMusic // field : " + field.getField());
-                sb.append("updateMusic // message : " + message);
-            });
-
-            model.addAttribute("errors", sb.toString());
-        }
+//        AOP로 처리
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder sb = new StringBuilder();
+//
+//            bindingResult.getAllErrors().forEach(objectError -> {
+//                FieldError field = (FieldError) objectError;
+//                String message = field.getDefaultMessage();
+//
+//                log.error("updateMusic // field : {}", field.getField());
+//                log.error("updateMusic // message : {}", message);
+//
+//                sb.append("updateMusic // field : " + field.getField());
+//                sb.append("updateMusic // message : " + message);
+//            });
+//
+//            model.addAttribute("errors", sb.toString());
+//        }
 
         musicService.update(musicId, updateDto);
         return "redirect:/";

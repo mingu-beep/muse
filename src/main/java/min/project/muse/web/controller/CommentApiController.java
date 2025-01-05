@@ -31,22 +31,23 @@ public class CommentApiController {
             , @AuthenticationPrincipal PrincipalDetails principal
             , Model model) {
 
-        if (bindingResult.hasErrors()) {
-            StringBuilder sb = new StringBuilder();
-
-            bindingResult.getAllErrors().forEach(objectError -> {
-                FieldError field = (FieldError) objectError;
-                String message = field.getDefaultMessage();
-
-                log.error("saveComments // field : {}", field.getField());
-                log.error("saveComments // message : {}", message);
-
-                sb.append("saveComments // field : " + field.getField());
-                sb.append("saveComments // message : " + message);
-            });
-
-            return ResponseEntity.badRequest().body(sb.toString());
-        }
+//        AOP로 처리
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder sb = new StringBuilder();
+//
+//            bindingResult.getAllErrors().forEach(objectError -> {
+//                FieldError field = (FieldError) objectError;
+//                String message = field.getDefaultMessage();
+//
+//                log.error("saveComments // field : {}", field.getField());
+//                log.error("saveComments // message : {}", message);
+//
+//                sb.append("saveComments // field : " + field.getField());
+//                sb.append("saveComments // message : " + message);
+//            });
+//
+//            return ResponseEntity.badRequest().body(sb.toString());
+//        }
 
         ShowCommentResponse responseDto = commentService.saveComment(commentDto, principal.getUserId());
 

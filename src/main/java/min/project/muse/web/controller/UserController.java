@@ -105,25 +105,26 @@ public class UserController {
     @PostMapping("/user")
     public String signUp(@Valid AddUserRequest request, BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            StringBuilder sb = new StringBuilder();
-
-            bindingResult.getAllErrors().forEach(objectError -> {
-                FieldError field = (FieldError) objectError;
-                String defaultMessage = field.getDefaultMessage();
-
-                log.error("signUp // field : {}", field.getField());
-                log.error("singUp // message : {}", defaultMessage);
-
-                sb.append("field : " + field.getField());
-                sb.append("message : " + defaultMessage);
-            });
-
-            model.addAttribute("errors", sb.toString());
-
-            return "redirect:/signup";
-
-        }
+//        AOP로 처리
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder sb = new StringBuilder();
+//
+//            bindingResult.getAllErrors().forEach(objectError -> {
+//                FieldError field = (FieldError) objectError;
+//                String defaultMessage = field.getDefaultMessage();
+//
+//                log.error("signUp // field : {}", field.getField());
+//                log.error("singUp // message : {}", defaultMessage);
+//
+//                sb.append("field : " + field.getField());
+//                sb.append("message : " + defaultMessage);
+//            });
+//
+//            model.addAttribute("errors", sb.toString());
+//
+//            return "redirect:/signup";
+//
+//        }
 
         log.info("######### AddUserRequest {}", request.toString());
         UserDTO userDTO = userService.save(request);
@@ -135,18 +136,19 @@ public class UserController {
     public String updateProfile(@PathVariable("userId") long userId
             , @Valid UpdateUserProfileRequest data, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            StringBuilder sb = new StringBuilder();
-
-            bindingResult.getAllErrors().forEach(objectError -> {
-                FieldError field = (FieldError) objectError;
-                String message = field.getDefaultMessage();
-
-                log.error("updateProfile // field : {}", field.getField());
-                log.error("updateProfile // message : {}", message);
-
-            });
-        }
+//        AOP로 처리
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder sb = new StringBuilder();
+//
+//            bindingResult.getAllErrors().forEach(objectError -> {
+//                FieldError field = (FieldError) objectError;
+//                String message = field.getDefaultMessage();
+//
+//                log.error("updateProfile // field : {}", field.getField());
+//                log.error("updateProfile // message : {}", message);
+//
+//            });
+//        }
 
         log.info("##### userId : {}", userId);
         log.info("##### data : {}", data.toString());
