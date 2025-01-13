@@ -20,7 +20,6 @@ public class AddMusicRequest {
     @NotBlank
     private String artist;
 
-    @NotBlank
     private MultipartFile image;
 
     @NotBlank

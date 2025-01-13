@@ -5,6 +5,7 @@ import min.project.muse.domain.comment.Comment;
 import min.project.muse.domain.likes.Likes;
 import min.project.muse.domain.music.Music;
 import min.project.muse.web.dto.comment.ShowCommentResponse;
+import min.project.muse.web.dto.music.ShowBriefMusicInfoResponse;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 
 import java.util.Arrays;
@@ -14,6 +15,28 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ConvertUtil {
+
+    public static List<ShowBriefMusicInfoResponse> getBriefInfo(List<Music> musics) {
+
+        List<ShowBriefMusicInfoResponse> res = new LinkedList<>();
+
+        for (Music music : musics) {
+            List<Likes> likes = music.getLikes();
+
+            res.add(ShowBriefMusicInfoResponse.builder()
+                    .user(music.getUser())
+                    .id(music.getId())
+                    .title(music.getTitle())
+                    .artist(music.getArtist())
+                    .moods(Arrays.stream(music.getMoods().split(",")).toList())
+                    .likeCount(likes.size())
+                    .build()
+            );
+        }
+
+        return res;
+
+    }
 
     public static List<ShowMusicResponse> convertToMusicDto(List<Music> musics, long loginUserId) {
 

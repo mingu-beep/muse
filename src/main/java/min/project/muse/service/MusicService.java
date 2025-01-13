@@ -9,6 +9,7 @@ import min.project.muse.domain.user.User;
 import min.project.muse.util.MultipartFileUtil;
 import min.project.muse.util.ConvertUtil;
 import min.project.muse.web.dto.music.AddMusicRequest;
+import min.project.muse.web.dto.music.ShowBriefMusicInfoResponse;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,10 @@ public class MusicService {
     // 음악 조회 method
     public List<Music> findAll() {
         return musicRepository.findAll();
+    }
+
+    public List<ShowBriefMusicInfoResponse> getBriefInfo() {
+        return ConvertUtil.getBriefInfo(musicRepository.findAll());
     }
 
     public Music findById(long id) {
