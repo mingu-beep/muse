@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MusicRepository extends JpaRepository<Music, Long> {
@@ -13,6 +14,8 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
     List<Music> findByArtistContaining(String keyword);
 
     List<Music> findByMoodsContaining(String keyword);
+
+    List<Music> findByCreateDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     @Query(value = "SELECT m.* FROM music m INNER JOIN (SELECT *, COUNT(*) likecount FROM likes GROUP BY music_id) l ON m.id = l.music_id ORDER BY l.likecount desc", nativeQuery = true)
     List<Music> selectPopular();

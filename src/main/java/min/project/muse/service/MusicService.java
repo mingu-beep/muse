@@ -17,7 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RequiredArgsConstructor // final 이 붙거나 @NotNull이 붙은 필드의 생성자 추가
@@ -96,6 +100,47 @@ public class MusicService {
             res.put("artist", musicRepository.findByArtistContaining(keyword));
         if (type.equals("all") || type.equals("mood"))
             res.put("mood", musicRepository.findByMoodsContaining(keyword));
+
+        return res;
+    }
+
+    // 날짜별 음악 검색 method
+    public Map<String, List<ShowBriefMusicInfoResponse>> findByDate() {
+
+        LocalDate date = LocalDate.now();
+        Map<String, List<ShowBriefMusicInfoResponse>> res = new HashMap<>();
+
+        for (int i = 0; i < 7; i++) {
+
+            LocalDate localDate = date.minusDays(i);
+
+            LocalDateTime startOfDay = localDate.atStartOfDay();
+            LocalDateTime endOfDay = localDate.atTime(LocalTime.MAX);
+
+            List<Music> byCreatedDateBetween = musicRepository.findByCreateDateBetween(startOfDay, endOfDay);
+            res.put(localDate.toString(), ConvertUtil.getBriefInfo(byCreatedDateBetween));
+
+        }
+
+        return res;
+    }
+
+    public Map<String, Integer> getChartData() {
+
+        Map<String, Integer> res = new HashMap<>();
+        LocalDate date = LocalDate.now();
+
+        for (int i = 6; i >= 0; i--) {
+
+            LocalDate localDate = date.minusDays(i);
+
+            LocalDateTime startOfDay = localDate.atStartOfDay();
+            LocalDateTime endOfDay = localDate.atTime(LocalTime.MAX);
+
+            List<Music> byCreatedDateBetween = musicRepository.findByCreateDateBetween(startOfDay, endOfDay);
+            res.put(localDate.toString(), byCreatedDateBetween.size());
+
+        }
 
         return res;
     }

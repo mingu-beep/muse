@@ -2,6 +2,7 @@ package min.project.muse.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.User;
 import min.project.muse.service.MusicService;
 import min.project.muse.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -22,7 +24,11 @@ public class AdminController {
     private final MusicService musicService;
 
     @GetMapping
-    public String mainPage () {
+    public String mainPage (Model model) {
+
+        model.addAttribute("tableData", musicService.findByDate());
+        model.addAttribute("chartData", musicService.getChartData());
+
         return "/admin/main";
     }
 
