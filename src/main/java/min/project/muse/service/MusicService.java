@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RequiredArgsConstructor // final 이 붙거나 @NotNull이 붙은 필드의 생성자 추가
@@ -143,5 +142,45 @@ public class MusicService {
         }
 
         return res;
+    }
+
+    public Map<String, Integer> countMusicByMood() {
+
+        Map<String, String> moods = new LinkedHashMap<>();
+        moods.put("joyful",         "행복");
+        moods.put("melancholic",    "슬픔");
+        moods.put("peaceful",       "평온");
+        moods.put("romantic",       "로맨틱");
+        moods.put("mysterious",     "신비");
+        moods.put("energetic",      "에너제틱");
+        moods.put("hopeful",         "희망");
+
+        Map<String, Integer> res = new LinkedHashMap<>();
+        for (String key : moods.keySet()) {
+            res.put(moods.get(key), musicRepository.countMusicsByMood(key));
+        }
+
+        return res;
+
+    }
+
+    public Map<String, List<ShowBriefMusicInfoResponse>> findByMoodAll() {
+
+        Map<String, String> moods = new LinkedHashMap<>();
+        moods.put("joyful",         "행복");
+        moods.put("melancholic",    "슬픔");
+        moods.put("peaceful",       "평온");
+        moods.put("romantic",       "로맨틱");
+        moods.put("mysterious",     "신비");
+        moods.put("energetic",      "에너제틱");
+        moods.put("hopeful",         "희망");
+
+        Map<String, List<ShowBriefMusicInfoResponse>> res = new LinkedHashMap<>();
+        for (String key : moods.keySet()) {
+            res.put(moods.get(key), ConvertUtil.getBriefInfo(musicRepository.findByMoodsContaining(key)));
+        }
+
+        return res;
+
     }
 }
