@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import min.project.muse.domain.comment.Comment;
 import min.project.muse.domain.likes.Likes;
+import min.project.muse.domain.mood.Mood;
 import min.project.muse.domain.user.User;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Main Entity
@@ -39,8 +41,14 @@ public class Music {
     @Column(name = "artist")
     private String artist;
 
+    @ManyToMany
+    @JoinTable(
+            name = "music_mood",
+            joinColumns = @JoinColumn(name = "music_id"),
+            inverseJoinColumns = @JoinColumn(name = "mood_id")
+    )
     @Column(name = "mood")
-    private String moods;
+    private Set<Mood> moods;
 
     @Column(name = "details")
     private String details;
@@ -63,12 +71,12 @@ public class Music {
         this.createDate = LocalDateTime.now();
     }
 
-    public void update(UpdateMusicRequest updateDto, String filename) {
+    public void update(UpdateMusicRequest updateDto, String filename, Set<Mood> moods) {
 
         this.image = filename;
         this.title = updateDto.getTitle();
         this.artist = updateDto.getArtist();
-        this.moods = updateDto.getMoods();
+        this.moods = moods;
         this.details = updateDto.getDetails();
     }
 

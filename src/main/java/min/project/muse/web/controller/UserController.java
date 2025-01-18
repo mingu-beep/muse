@@ -80,7 +80,7 @@ public class UserController {
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())
-                    .moods(Arrays.stream(music.getMoods().split(",")).toList())
+//                    .moods(Arrays.stream(music.getMoods().split(",")).toList())
                     .image(music.getImage())
                     .owner(owner)
                     .build());

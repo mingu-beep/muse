@@ -3,8 +3,10 @@ package min.project.muse.web.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import min.project.muse.domain.mood.Mood;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.PrincipalDetails;
+import min.project.muse.service.MoodService;
 import min.project.muse.service.MusicService;
 import min.project.muse.util.ConvertUtil;
 import min.project.muse.web.dto.music.AddMusicRequest;
@@ -29,23 +31,11 @@ import java.util.Map;
 public class MusicController {
 
     private final MusicService musicService;
+    private final MoodService moodService;
 
     @ModelAttribute("moods")
-    public Map<String, String> moods() {
-
-
-        Map<String, String> moods = new LinkedHashMap<>();
-
-        moods.put("joyful",         "행복");
-        moods.put("melancholic",    "슬픔");
-        moods.put("peaceful",       "평온");
-        moods.put("romantic",       "로맨틱");
-        moods.put("mysterious",     "신비");
-        moods.put("energetic",      "에너제틱");
-        moods.put("hopeful",         "희망");
-
-        return moods;
-
+    public List<Mood> moods() {
+        return moodService.findAll();
     }
 
     @Value("${search.type}")

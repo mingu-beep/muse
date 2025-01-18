@@ -3,6 +3,7 @@ package min.project.muse.util;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.comment.Comment;
 import min.project.muse.domain.likes.Likes;
+import min.project.muse.domain.mood.Mood;
 import min.project.muse.domain.music.Music;
 import min.project.muse.web.dto.comment.ShowCommentResponse;
 import min.project.muse.web.dto.music.ShowBriefMusicInfoResponse;
@@ -28,7 +29,7 @@ public class ConvertUtil {
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())
-                    .moods(Arrays.stream(music.getMoods().split(",")).toList())
+                    .moods(music.getMoods().stream().map(Mood::getLabel).toList())
                     .likeCount(likes.size())
                     .build()
             );
@@ -57,7 +58,7 @@ public class ConvertUtil {
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())
-                    .moods(Arrays.stream(music.getMoods().split(",")).toList())
+                    .moods(music.getMoods())
                     .image(music.getImage())
                     .owner(music.getUser().getId() == loginUserId)
                     .likeCount(likes.size())

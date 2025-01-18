@@ -33,7 +33,7 @@
             <small class="text-body-secondary me-2">
               <a class="link-dark"
                  th:each="mood : ${music.moods}"
-                 th:text="|#${mood} |" th:href="@{/musics(type='mood',keyword=${mood})}"></a>
+                 th:text="|#${mood.script} |" th:href="@{/musics(type='mood',keyword=${mood.label})}"></a>
             </small>
           </div>
           <div class="d-flex justify-content-end align-items-center">
@@ -81,9 +81,12 @@
               />
 
               <div class="music_detail_info">
-                <p th:text="${music.artist}"></p>
-                <p th:text="${music.moods}"></p>
-                <p th:text="${music.details}"></p>
+                  <p th:text="${music.artist}"></p>
+                  <div class="text-body-secondary me-2 d-flex">
+                      <p class="link-dark m-3"
+                         th:each="mood : ${music.moods}" th:text="|#${mood.script}|"></p>
+                  </div>
+                  <p th:text="${music.details}"></p>
               </div>
 
               <hr/>

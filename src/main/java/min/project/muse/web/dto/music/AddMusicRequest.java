@@ -2,9 +2,14 @@ package min.project.muse.web.dto.music;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import min.project.muse.domain.mood.Mood;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.User;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +32,7 @@ public class AddMusicRequest {
 
     private String details;
 
-    public Music toEntity(String imageUrl, User user) {
+    public Music toEntity(String imageUrl, User user, Set<Mood> moods) {
         return Music.builder()
                 .user(user)
                 .title(title)
@@ -37,4 +42,5 @@ public class AddMusicRequest {
                 .image(imageUrl)
                 .build();
     }
+
 }

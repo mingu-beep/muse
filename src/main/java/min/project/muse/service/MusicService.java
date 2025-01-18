@@ -2,6 +2,8 @@ package min.project.muse.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import min.project.muse.domain.mood.Mood;
+import min.project.muse.domain.mood.MoodRepository;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.domain.user.PrincipalDetails;
@@ -34,14 +36,25 @@ public class MusicService {
     private String searchType;
 
     private final MusicRepository musicRepository;
+    private final MoodRepository moodRepository;
+
+    private Set<Mood> convertMood(String req) {
+        Set<Mood> moods = new HashSet<>();
+        for (String id : req.split(",")) {
+            Mood mood = moodRepository.findById(Long.parseLong(id)).orElseThrow(
+                    () -> new IllegalArgumentException("not found: " + id)
+            );
+            moods.add(mood);
+        }
+        return moods;
+    }
 
     // 음악 추가 method
     public Music save(AddMusicRequest request, User user) {
 
         MultipartFile image = request.getImage();
         String filename = MultipartFileUtil.saveImage(uploadPath, image);
-
-        return musicRepository.save(request.toEntity(filename, user));
+        return musicRepository.save(request.toEntity(filename, user, convertMood(request.getMoods())));
     }
 
     // 음악 조회 method
@@ -82,7 +95,7 @@ public class MusicService {
         Music music = musicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
         String filename = request.getImage().isEmpty() ? music.getImage() : MultipartFileUtil.saveImage(uploadPath, request.getImage());
-        music.update(request, filename);
+        music.update(request, filename, convertMood(request.getMoods()));
 
         return music;
     }
@@ -97,8 +110,17 @@ public class MusicService {
             res.put("title", musicRepository.findByTitleContaining(keyword));
         if (type.equals("all") || type.equals("artist"))
             res.put("artist", musicRepository.findByArtistContaining(keyword));
-        if (type.equals("all") || type.equals("mood"))
-            res.put("mood", musicRepository.findByMoodsContaining(keyword));
+        if (type.equals("all") || type.equals("mood")) {
+            Mood byScript = moodRepository.findByScript(keyword);
+            if (byScript != null) {
+                res.put("mood", byScript.getMusics().stream().toList());
+            }
+
+            Mood byLabel = moodRepository.findByLabel(keyword);
+            if (byLabel != null) {
+                res.put("mood", byLabel.getMusics().stream().toList());
+            }
+        }
 
         return res;
     }
@@ -146,18 +168,10 @@ public class MusicService {
 
     public Map<String, Integer> countMusicByMood() {
 
-        Map<String, String> moods = new LinkedHashMap<>();
-        moods.put("joyful",         "행복");
-        moods.put("melancholic",    "슬픔");
-        moods.put("peaceful",       "평온");
-        moods.put("romantic",       "로맨틱");
-        moods.put("mysterious",     "신비");
-        moods.put("energetic",      "에너제틱");
-        moods.put("hopeful",         "희망");
-
         Map<String, Integer> res = new LinkedHashMap<>();
-        for (String key : moods.keySet()) {
-            res.put(moods.get(key), musicRepository.countMusicsByMood(key));
+
+        for (Mood mood : moodRepository.findAll()) {
+            res.put(mood.getLabel(), mood.getMusics().size());
         }
 
         return res;
@@ -166,18 +180,11 @@ public class MusicService {
 
     public Map<String, List<ShowBriefMusicInfoResponse>> findByMoodAll() {
 
-        Map<String, String> moods = new LinkedHashMap<>();
-        moods.put("joyful",         "행복");
-        moods.put("melancholic",    "슬픔");
-        moods.put("peaceful",       "평온");
-        moods.put("romantic",       "로맨틱");
-        moods.put("mysterious",     "신비");
-        moods.put("energetic",      "에너제틱");
-        moods.put("hopeful",         "희망");
 
         Map<String, List<ShowBriefMusicInfoResponse>> res = new LinkedHashMap<>();
-        for (String key : moods.keySet()) {
-            res.put(moods.get(key), ConvertUtil.getBriefInfo(musicRepository.findByMoodsContaining(key)));
+
+        for (Mood mood : moodRepository.findAll()) {
+            res.put(mood.getLabel(), ConvertUtil.getBriefInfo(mood.getMusics().stream().toList()));
         }
 
         return res;

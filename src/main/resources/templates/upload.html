@@ -67,10 +67,10 @@
             <div class="form-check form-check-inline" th:each="mood: ${moods}">
               <input class="form-check-input"
                      th:field="*{moods}"
-                     th:value="${mood.key}" type="checkbox">
+                     th:value="${mood.id}" type="checkbox">
               <label class="form-check-label"
-                     th:for="${#ids.prev('moods')}"
-                     th:text="${mood.value}">1</label>
+                     th:for="${mood.id}"
+                     th:text="${mood.script}">1</label>
             </div>
 
           </div>
