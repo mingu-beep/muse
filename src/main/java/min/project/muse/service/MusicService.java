@@ -7,6 +7,7 @@ import min.project.muse.domain.mood.MoodRepository;
 import min.project.muse.domain.music.Music;
 import min.project.muse.domain.music.MusicRepository;
 import min.project.muse.domain.user.PrincipalDetails;
+import min.project.muse.domain.user.Role;
 import min.project.muse.domain.user.User;
 import min.project.muse.util.MultipartFileUtil;
 import min.project.muse.util.ConvertUtil;
@@ -85,8 +86,16 @@ public class MusicService {
     }
 
     // 음악 삭제 method
-    public void deleteById(long id) {
-        musicRepository.deleteById(id);
+    public boolean deleteById(long id, User user) {
+
+        Music entity = musicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+
+        if(entity.getUser().getId() == id || user.getRole().equals(Role.ADMIN)) {
+            musicRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 
     // 음악 수정 method

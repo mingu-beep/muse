@@ -114,11 +114,16 @@ public class MusicController {
     // Delete
     @ResponseBody
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMusic(@PathVariable("id") long musicId) {
+    public ResponseEntity<Void> deleteMusic(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                            @PathVariable("id") long musicId) {
 
         log.info("%%%%%%% delete Music {}", musicId);
-        musicService.deleteById(musicId);
-        return ResponseEntity.accepted().build();
+        if(principalDetails != null) {
+            if(musicService.deleteById(musicId, principalDetails.getUser()))
+                return ResponseEntity.accepted().build();
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/{id}")

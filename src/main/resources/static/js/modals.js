@@ -58,7 +58,7 @@ function deleteMusic(musicId) {
         location.replace(location.href);
 
     }).fail(err => {
-        alert("삭제 실패");
+        alert("삭제 권한이 없습니다.");
     });
 }
 

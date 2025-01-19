@@ -120,6 +120,7 @@
                                 <th scope="col">Mood</th>
                                 <th scope="col"># of Likes</th>
                                 <th scope="col">Uploader</th>
+                                <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -130,6 +131,11 @@
                                     <td th:text="${music.moods}">Mood</td>
                                     <td th:text="${music.likeCount}">0</td>
                                     <td th:text="${music.user.username}">id</td>
+                                    <td>
+                                        <button type="button" class="btn-close"
+                                                th:onclick="|checkDelete(${music.id})|"
+                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
