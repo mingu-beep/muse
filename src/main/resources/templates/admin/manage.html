@@ -2,7 +2,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en" data-bs-theme="light">
 
-    <head th:replace="~{/fragment/head :: head('Report')}"></head>
+    <head th:replace="~{/fragment/head :: head('Admin')}"></head>
 
     <body>
 
@@ -108,41 +108,87 @@
 
                 <!-- 컨탠츠 영역 -->
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Report</h1>
+                        <h1 class="h2">Manage</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <div class="btn btn-sm btn-outline-secondary"
+                                     data-bs-toggle="modal" data-bs-target="#addMoodModal"
+                                >
+                                    Add
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <canvas class="my-4 w-100" id="myDonutChart" style="display: block; box-sizing: border-box; height: 400px; width: 400px;"></canvas>
-                    <h2> </h2>
-                    <div class="table-responsive small" th:each="table : ${tableData}">
-                        <h3 th:text="${table.key}">Section title</h3>
-                        <h5  th:if="${table.value.isEmpty()}" class="text-center">
-                            No Data
-                        </h5>
-                        <table  th:unless="${table.value.isEmpty()}"
+                    <div class="modal fade" id="addMoodModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Label</th>
+                                                <th scope="col">Script</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input class="form-control" id="labelInput"
+                                                           type="text" placeholder="Label">
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" id="scriptInput"
+                                                           type="text" placeholder="Script">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-end">
+                                    <div>
+                                        <button type="button" class="btn btn-primary" onclick="saveMood()">Save</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive small">
+                        <table  th:unless="${moods.size() == 0}"
                                 class="table table-striped table-sm">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Artist</th>
-                                <th scope="col">Mood</th>
-                                <th scope="col"># of Likes</th>
-                                <th scope="col">Uploader</th>
+                                <th scope="col">Label</th>
+                                <th scope="col">Script</th>
+<!--                                <th scope="col"></th>-->
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr th:each="music : ${table.value}">
-                                <td th:text="${music.id}">0</td>
-                                <td th:text="${music.title}">Title</td>
-                                <td th:text="${music.artist}">Artist</td>
-                                <td th:text="${music.moods}">Mood</td>
-                                <td th:text="${music.likeCount}">0</td>
-                                <td th:text="${music.user.username}">id</td>
-                            </tr>
+                            <tbody id="mood_table_body">
+                                <tr th:each="mood : ${moods}">
+                                    <td th:text="${mood.id}">0</td>
+                                    <td th:text="${mood.label}">Label</td>
+                                    <td th:text="${mood.script}">Script</td>
+    <!--                                <td>-->
+    <!--                                    <button type="button"-->
+    <!--                                            class="btn btn-primary"-->
+    <!--                                            th:onclick="|deleteMood(${mood.id})|">Delete-->
+    <!--                                    </button>-->
+    <!--                                </td>-->
+
+                                </tr>
                             </tbody>
                         </table>
-
                     </div>
                 </main>
             </div>
@@ -150,50 +196,6 @@
 
         <div th:replace="~{/fragment/script :: script}"></div>
 
-        <script th:inline="javascript">
-            const key = Object.keys([[${data}]]);
-            const value = Object.values([[${data}]]);
-
-            const ctx = document.getElementById('myDonutChart').getContext('2d');
-            const data = {
-                labels: key,
-                datasets: [{
-                    data: value, // 각 항목의 데이터 값
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            };
-
-            const options = {
-                responsive: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    },
-                    tooltip: {
-                        enabled: true
-                    }
-                }
-            };
-
-            const myDonutChart = new Chart(ctx, {
-                type: 'doughnut', // 도넛 차트
-                data: data,
-                options: options
-            });
-        </script>
     </body>
 
 </html>

@@ -1,3 +1,41 @@
+function saveMood() {
+
+    const label = $(`#labelInput`).val();
+    const script = $(`#scriptInput`).val()
+
+    let dto = {
+        label: label,
+        script: script
+    };
+
+    $.ajax({
+        type:'POST',
+        url:'/admin/mood',
+        data:JSON.stringify(dto),
+        contentType:"application/json; charset=utf-8",
+        dataType: "json"
+    }).done(res => {
+        console.log("ok : " + res);
+
+        $(`#addMoodModal`).modal('hide');
+
+        let moodList = $(`#mood_table_body`)
+
+        let newMood = `
+            <tr>
+                <td>${res.id}</td>
+                <td>${res.label}Label</td>
+                <td>${res.script}</td>
+            </tr>
+        `
+
+        moodList.append(newMood);
+
+    }).fail(err => {
+        console.log("fail");
+    });
+}
+
 function checkDelete(musicId) {
     if(confirm("정말 삭제하시겠습니까?") == true) {
         deleteMusic(musicId);

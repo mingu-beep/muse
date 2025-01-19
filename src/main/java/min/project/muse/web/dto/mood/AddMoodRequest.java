@@ -1,15 +1,14 @@
 package min.project.muse.web.dto.mood;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import min.project.muse.domain.mood.Mood;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 public class AddMoodRequest {
 
     private String label;

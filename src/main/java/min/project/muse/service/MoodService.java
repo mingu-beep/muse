@@ -1,6 +1,7 @@
 package min.project.muse.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.mood.Mood;
 import min.project.muse.domain.mood.MoodRepository;
 import min.project.muse.web.dto.mood.AddMoodRequest;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MoodService {
@@ -17,8 +19,8 @@ public class MoodService {
     private final MoodRepository moodRepository;
 
     // CRUD
-    public void addMood(AddMoodRequest req) {
-        moodRepository.save(req.toEntity());
+    public Mood addMood(AddMoodRequest req) {
+        return moodRepository.save(req.toEntity());
     }
 
     public List<Mood> findAll() {
