@@ -4,7 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import min.project.muse.domain.mood.Mood;
 import min.project.muse.domain.mood.MoodRepository;
+import min.project.muse.domain.user.Role;
+import min.project.muse.domain.user.User;
+import min.project.muse.domain.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -12,10 +17,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataInitializer implements CommandLineRunner {
 
+    private final PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
     private final MoodRepository moodRepository;
 
     @Override
     public void run(String... args) throws Exception {
+
+        if (userRepository.countByRole(Role.ADMIN) == 0) {
+            userRepository.save(User.builder()
+                    .username("admin")
+                    .password(passwordEncoder.encode("admin"))
+                    .role(Role.ADMIN)
+                    .build());
+
+            log.info(" Default Admin Account Setting Complete");
+        }
 
         if (moodRepository.count() == 0) {
 
