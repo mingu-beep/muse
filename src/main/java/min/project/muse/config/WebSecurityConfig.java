@@ -1,5 +1,8 @@
 package min.project.muse.config;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import min.project.muse.config.oauth.OAuth2UserCustomService;
 import min.project.muse.domain.user.Role;
@@ -7,19 +10,22 @@ import min.project.muse.service.CustomUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -59,7 +65,26 @@ public class WebSecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/", true)
+                        .failureHandler(new AuthenticationFailureHandler() {
+                            @Override
+                            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+
+                                    String errorMessage = null;
+                                    if(exception instanceof BadCredentialsException || exception instanceof InternalAuthenticationServiceException){
+                                        errorMessage = "Username과 Password가 맞지 않습니다. 다시 확인해 주십시오";
+                                    }else if(exception instanceof DisabledException){
+                                        errorMessage = "계정이 비활성화 되었습니다. 관리자에게 문의하세요.";
+                                    }else if(exception instanceof CredentialsExpiredException){
+                                        errorMessage = "비밀번호 유효기간이 만료 되었습니다. 관리자에게 문의하세요.";
+                                    }else{
+                                        errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다. 관리자에게 문의하세요.";
+                                    }
+                                    request.setAttribute("errorMessage", errorMessage);
+                                    request.getRequestDispatcher("/login?error").forward(request,response);
+
+                            }
+                        })
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
