@@ -10,8 +10,8 @@ import min.project.muse.web.dto.PageDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +28,19 @@ public class ApiController {
     public String get(@RequestParam("track") String track, @RequestParam("page") int page, Model model) {
 
         log.info("track = {}, page = {}", track, page);
-        String response = lastApiService.get(track, page);
+        Mono<String> apiResult = lastApiService.get(track, page);
+        return apiResult.flatMap( response -> {
+            List<Track> trackList = new ArrayList<>();
+            int totalNumber = ApiResponseParser.getTracks(response, trackList);
 
-        List<Track> trackList = new ArrayList<>();
-        int totalNumber = ApiResponseParser.getTracks(response, trackList);
-        PageDTO pageDTO = pageService.calcPage(page, totalNumber);
+            PageDTO pageDTO = pageService.calcPage(page, totalNumber);
 
-        model.addAttribute("track", track);
-        model.addAttribute("trackList", trackList);
-        model.addAttribute("pageDTO", pageDTO);
+            model.addAttribute("track", track);
+            model.addAttribute("trackList", trackList);
+            model.addAttribute("pageDTO", pageDTO);
 
-        return "popup";
+            return Mono.just("popup");
+        }).block();
+
     }
 }

@@ -4,8 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.List;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -14,7 +13,7 @@ public class LastApiService {
     @Value("${last.fm.api.key}")
     private String apiKey;
 
-    public String get(String track, int page) {
+    public Mono<String> get(String track, int page) {
 
         // webClient 기본 설정
         WebClient webClient = WebClient.builder()
@@ -37,8 +36,7 @@ public class LastApiService {
                                         .build()
                 )
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .bodyToMono(String.class);
 
     }
 }
