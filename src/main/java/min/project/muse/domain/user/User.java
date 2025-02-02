@@ -6,6 +6,7 @@ import lombok.*;
 import min.project.muse.domain.likes.Likes;
 import min.project.muse.domain.music.Music;
 import min.project.muse.web.dto.user.UpdateUserProfileRequest;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,8 @@ public class User {
     private String nickname;
 
     @Column(name = "profileImage")
-    private String profileImage;
+    @Builder.Default
+    private String profileImage = "default.png";
 
     @Column(name = "bio")
     private String bio;

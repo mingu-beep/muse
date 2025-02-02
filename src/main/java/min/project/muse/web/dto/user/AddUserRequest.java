@@ -34,6 +34,7 @@ public class AddUserRequest {
     public User toEntity(String encodedPassword, Role role) {
         return User.builder()
                 .username(username)
+                .nickname(username)
                 .password(encodedPassword)
                 .email(email)
                 .role(role)
