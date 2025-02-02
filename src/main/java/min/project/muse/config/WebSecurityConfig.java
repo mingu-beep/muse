@@ -52,10 +52,12 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                new AntPathRequestMatcher("/login"),
+                                new AntPathRequestMatcher("/signup")
+                        ).anonymous()
+                        .requestMatchers(
                                 new AntPathRequestMatcher("/img/**"),
                                 new AntPathRequestMatcher("/"),
-                                new AntPathRequestMatcher("/login"),
-                                new AntPathRequestMatcher("/signup"),
                                 new AntPathRequestMatcher("/user/**", "GET"),
                                 new AntPathRequestMatcher("/user", "POST"),
                                 new AntPathRequestMatcher("/musics", "GET"),
@@ -70,18 +72,18 @@ public class WebSecurityConfig {
                             @Override
                             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
-                                    String errorMessage = null;
-                                    if(exception instanceof BadCredentialsException || exception instanceof InternalAuthenticationServiceException){
-                                        errorMessage = "Username과 Password가 맞지 않습니다. 다시 확인해 주십시오";
-                                    }else if(exception instanceof DisabledException){
-                                        errorMessage = "계정이 비활성화 되었습니다. 관리자에게 문의하세요.";
-                                    }else if(exception instanceof CredentialsExpiredException){
-                                        errorMessage = "비밀번호 유효기간이 만료 되었습니다. 관리자에게 문의하세요.";
-                                    }else{
-                                        errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다. 관리자에게 문의하세요.";
-                                    }
-                                    request.setAttribute("errorMessage", errorMessage);
-                                    request.getRequestDispatcher("/login?error").forward(request,response);
+                                String errorMessage = null;
+                                if (exception instanceof BadCredentialsException || exception instanceof InternalAuthenticationServiceException) {
+                                    errorMessage = "Username과 Password가 맞지 않습니다. 다시 확인해 주십시오";
+                                } else if (exception instanceof DisabledException) {
+                                    errorMessage = "계정이 비활성화 되었습니다. 관리자에게 문의하세요.";
+                                } else if (exception instanceof CredentialsExpiredException) {
+                                    errorMessage = "비밀번호 유효기간이 만료 되었습니다. 관리자에게 문의하세요.";
+                                } else {
+                                    errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다. 관리자에게 문의하세요.";
+                                }
+                                request.setAttribute("errorMessage", errorMessage);
+                                request.getRequestDispatcher("/login?error").forward(request, response);
 
                             }
                         })
@@ -95,8 +97,10 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UserCustomService))
                 )
-                .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
+                .csrf(AbstractHttpConfigurer::disable)// csrf 비활성화
+                .exceptionHandling(e-> e.accessDeniedPage("/"))
                 .build();
+
     }
 
     // 인증 관리자 관련 설정
