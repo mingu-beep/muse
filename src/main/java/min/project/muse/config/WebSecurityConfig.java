@@ -73,7 +73,10 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/musics", "GET"),
                                 new AntPathRequestMatcher("/popular"),
                                 new AntPathRequestMatcher("/all")
-                        ).permitAll() // 누구나 접근이 가능하다.
+                        ).permitAll()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/admin/**")
+                        ).hasRole("ADMIN")
                         .anyRequest().authenticated() // 위에 설정한 url 이외의 요청에 대해서는 인증이 필요하다.
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
@@ -92,7 +95,7 @@ public class WebSecurityConfig {
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuth2UserCustomService))
                 )
                 .csrf(AbstractHttpConfigurer::disable)// csrf 비활성화
-                .exceptionHandling(e-> e.accessDeniedPage("/"))
+                .exceptionHandling(e-> e.accessDeniedPage("redirect:/"))
                 .build();
 
     }
