@@ -31,7 +31,7 @@ public class AdminController {
     @GetMapping
     public String mainPage (Model model) {
 
-        model.addAttribute("tableData", musicService.findByDate());
+        model.addAttribute("tableData", musicService.findByDate(7));
         model.addAttribute("chartData", musicService.getChartData());
 
         return "/admin/main";

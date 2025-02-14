@@ -13,15 +13,18 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li>
-                        <a th:if="${menu == 'home'}" href="/"         class="nav-link px-2 link-secondary">HOME</a>
-                        <a th:unless="${menu == 'home'}" href="/"         class="nav-link px-2 link-body-emphasis">HOME</a>
+                        <a th:if="${menu == 'home'}" href="/"         class="nav-link px-2 link-secondary">TODAY</a>
+                        <a th:unless="${menu == 'home'}" href="/"         class="nav-link px-2 link-body-emphasis">Today</a>
                     </li>
                     <li>
                         <a th:if="${menu == 'popular'}" href="/popular"         class="nav-link px-2 link-secondary">POPULAR</a>
-                        <a th:unless="${menu == 'popular'}" href="/popular"         class="nav-link px-2 link-body-emphasis">POPULAR</a>
+                        <a th:unless="${menu == 'popular'}" href="/popular"         class="nav-link px-2 link-body-emphasis">Popular</a>
                     </li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
+                    <li>
+                        <a th:if="${menu == 'all'}" href="/all"         class="nav-link px-2 link-secondary">ALL</a>
+                        <a th:unless="${menu == 'all'}" href="/all"         class="nav-link px-2 link-body-emphasis">All</a>
+                    </li>
+<!--                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>-->
                 </ul>
 
                 <form class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3" role="search" method="GET" action="/musics">

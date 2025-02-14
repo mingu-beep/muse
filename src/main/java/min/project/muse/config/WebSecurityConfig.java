@@ -61,7 +61,8 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/user/**", "GET"),
                                 new AntPathRequestMatcher("/user", "POST"),
                                 new AntPathRequestMatcher("/musics", "GET"),
-                                new AntPathRequestMatcher("/popular")
+                                new AntPathRequestMatcher("/popular"),
+                                new AntPathRequestMatcher("/all")
                         ).permitAll() // 누구나 접근이 가능하다.
                         .anyRequest().authenticated() // 위에 설정한 url 이외의 요청에 대해서는 인증이 필요하다.
                 )

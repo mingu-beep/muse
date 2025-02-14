@@ -78,6 +78,17 @@ public class MusicService {
         return ConvertUtil.convertToMusicDto(musicRepository.findAll(), loginUserId);
     }
 
+    public List<ShowMusicResponse> findTodayMusicList(PrincipalDetails principal) {
+
+        long loginUserId = principal != null ? principal.getUserId() : -1;
+
+        LocalDate localDate = LocalDate.now();
+        LocalDateTime startOfDay = localDate.atStartOfDay();
+        LocalDateTime endOfDay = localDate.atTime(LocalTime.MAX);
+
+        return ConvertUtil.convertToMusicDto(musicRepository.findByCreateDateBetween(startOfDay, endOfDay), loginUserId);
+    }
+
     public List<ShowMusicResponse> findPopularMusicList(PrincipalDetails principal) {
 
         long loginUserId = principal != null ? principal.getUserId() : -1;
@@ -135,12 +146,12 @@ public class MusicService {
     }
 
     // 날짜별 음악 검색 method
-    public Map<String, List<ShowBriefMusicInfoResponse>> findByDate() {
+    public Map<String, List<ShowBriefMusicInfoResponse>> findByDate(int days) {
 
         LocalDate date = LocalDate.now();
         Map<String, List<ShowBriefMusicInfoResponse>> res = new HashMap<>();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < days; i++) {
 
             LocalDate localDate = date.minusDays(i);
 
