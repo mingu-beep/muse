@@ -1,6 +1,8 @@
 package min.project.muse.web.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,6 +58,23 @@ public class UserController {
 //        return "redirect:/";
 //    }
 
+
+    @GetMapping("/login")
+    public String login(Model model, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+
+        String errorMessage = (String) session.getAttribute("errorMessage");
+
+        if (errorMessage != null) {
+            log.error(" ******* error : {}", errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            session.removeAttribute("errorMessage");
+        }
+
+
+        return "/auth/login";
+    }
 
     @GetMapping("/user/{userId}")
     public String profile(@PathVariable("userId") long userId, @AuthenticationPrincipal PrincipalDetails principal, Model model) {

@@ -35,6 +35,16 @@ public class WebSecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final OAuth2UserCustomService oAuth2UserCustomService;
 
+    @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
+    public LoginFailureHandler loginFailureHandler() {
+        return new LoginFailureHandler();
+    }
+
     // 스프링 시큐리티 기능 비활성화
     @Bean
     public WebSecurityCustomizer configure() {
@@ -68,26 +78,9 @@ public class WebSecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
-                        .failureHandler(new AuthenticationFailureHandler() {
-                            @Override
-                            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-
-                                String errorMessage = null;
-                                if (exception instanceof BadCredentialsException || exception instanceof InternalAuthenticationServiceException) {
-                                    errorMessage = "Username과 Password가 맞지 않습니다. 다시 확인해 주십시오";
-                                } else if (exception instanceof DisabledException) {
-                                    errorMessage = "계정이 비활성화 되었습니다. 관리자에게 문의하세요.";
-                                } else if (exception instanceof CredentialsExpiredException) {
-                                    errorMessage = "비밀번호 유효기간이 만료 되었습니다. 관리자에게 문의하세요.";
-                                } else {
-                                    errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다. 관리자에게 문의하세요.";
-                                }
-                                request.setAttribute("errorMessage", errorMessage);
-                                request.getRequestDispatcher("/login?error").forward(request, response);
-
-                            }
-                        })
+//                        .defaultSuccessUrl("/", true)
+                        .successHandler(loginSuccessHandler())
+                        .failureHandler(loginFailureHandler())
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")

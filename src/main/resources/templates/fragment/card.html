@@ -101,7 +101,7 @@
 
                       <hr/>
 
-                      <div class="bg-body-tertiary p-3" th:id="|comment_item_list${music.id}|">
+                      <div class="p-3" th:id="|comment_item_list${music.id}|">
                               <div th:each="comment : ${music.comments}" th:id="|comment_item${comment.id}|">
                                   <div th:id="|comment_item_header${comment.id}|" class="d-flex justify-content-between">
                                       <p th:text="${comment.username}">username</p>
