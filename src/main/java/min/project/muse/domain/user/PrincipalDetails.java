@@ -24,7 +24,7 @@ public class PrincipalDetails  implements UserDetails { // UserDetails 를 상�
                 return user.getRole().getKey();
             }
         });
-        return null;
+        return collect; // null 이다!!!!!
     }
 
     public String getProfileImage() {

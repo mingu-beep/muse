@@ -22,6 +22,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        System.out.println("!!!! " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }
