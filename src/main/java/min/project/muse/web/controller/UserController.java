@@ -11,6 +11,7 @@ import min.project.muse.domain.music.Music;
 import min.project.muse.domain.user.PrincipalDetails;
 import min.project.muse.domain.user.User;
 import min.project.muse.service.UserService;
+import min.project.muse.util.ConvertUtil;
 import min.project.muse.util.SecurityUtil;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.user.AddUserRequest;
@@ -96,7 +97,7 @@ public class UserController {
 
         for (Music music : userEntity.getMusicList()) {
             dtoList.add(ShowMusicResponse.builder()
-                    .user(music.getUser())
+                    .user(ConvertUtil.convertToUserDTO(music.getUser()))
                     .id(music.getId())
                     .title(music.getTitle())
                     .artist(music.getArtist())

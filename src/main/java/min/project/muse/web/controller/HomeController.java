@@ -22,7 +22,19 @@ public class HomeController {
 
     private final MusicService musicService;
 
+    // 무드를 선택해서 그 무드만 볼 수 있도록 필터링 기능 추가 요망
     @GetMapping("/")
+    public String all(Model model, @AuthenticationPrincipal PrincipalDetails principal) {
+
+
+        model.addAttribute("menu", "home");
+        model.addAttribute("title", "All Musics");
+        model.addAttribute("musics", musicService.findMusicList(principal));
+
+        return "home";
+    }
+
+    @GetMapping("/today")
     public String home(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         // admin 일 경우 admin 
@@ -34,7 +46,7 @@ public class HomeController {
 
         List<ShowMusicResponse> musics = musicService.findTodayMusicList(principalDetails);
 
-        model.addAttribute("menu", "home");
+        model.addAttribute("menu", "today");
         model.addAttribute("title", "Today Uploaded");
         model.addAttribute("musics", musics);
 
@@ -49,18 +61,6 @@ public class HomeController {
         model.addAttribute("menu", "popular");
         model.addAttribute("title", "Most Popular");
         model.addAttribute("musics", popularMusicList);
-
-        return "home";
-    }
-
-    // 무드를 선택해서 그 무드만 볼 수 있도록 필터링 기능 추가 요망
-    @GetMapping("/all")
-    public String all(Model model, @AuthenticationPrincipal PrincipalDetails principal) {
-
-
-        model.addAttribute("menu", "all");
-        model.addAttribute("title", "All Musics");
-        model.addAttribute("musics", musicService.findMusicList(principal));
 
         return "home";
     }

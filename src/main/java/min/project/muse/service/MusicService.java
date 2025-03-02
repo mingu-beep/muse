@@ -16,6 +16,8 @@ import min.project.muse.web.dto.music.ShowBriefMusicInfoResponse;
 import min.project.muse.web.dto.music.ShowMusicResponse;
 import min.project.muse.web.dto.music.UpdateMusicRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -209,5 +211,11 @@ public class MusicService {
 
         return res;
 
+    }
+
+    public List<ShowMusicResponse> loadMusicList(PrincipalDetails principal, Pageable pageable) {
+        long loginUserId = principal != null ? principal.getUserId() : -1;
+
+        return ConvertUtil.convertToMusicDto(musicRepository.selectMusicList(pageable), loginUserId);
     }
 }
