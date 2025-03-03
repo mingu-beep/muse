@@ -74,6 +74,7 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 new AntPathRequestMatcher("/img/**"),
                                 new AntPathRequestMatcher("/"),
+                                new AntPathRequestMatcher("/all"),
                                 new AntPathRequestMatcher("/user/**", "GET"),
                                 new AntPathRequestMatcher("/user", "POST"),
                                 new AntPathRequestMatcher("/musics", "GET"),

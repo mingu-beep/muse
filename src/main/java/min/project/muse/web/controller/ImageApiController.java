@@ -21,8 +21,6 @@ public class ImageApiController {
     @GetMapping("/{filename}")
     public Resource showImage(@PathVariable("filename") String filename) throws MalformedURLException {
 
-        log.info("filename : {}", filename);
-
         File file = new File("C://dev/upload/muse/" + filename);
         return new UrlResource("file:" + file.getAbsolutePath());
     }

@@ -11,6 +11,7 @@ import min.project.muse.domain.user.UserDTO;
 import min.project.muse.web.dto.comment.ShowCommentResponse;
 import min.project.muse.web.dto.music.ShowBriefMusicInfoResponse;
 import min.project.muse.web.dto.music.ShowMusicResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -78,6 +79,16 @@ public class ConvertUtil {
                     .build()
             );
         }
+
+        return res;
+
+    }
+
+    public static Page<ShowMusicResponse> convertToMusicPage(Page<Music> musics, long loginUserId) {
+//        Page<PostsResponseDto> postsResponseDtos = postsPages.map(
+//                postPage -> new PostsResponseDto(postPage));
+
+        Page<ShowMusicResponse> res = musics.map(page -> new ShowMusicResponse(page, loginUserId));
 
         return res;
 

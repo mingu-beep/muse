@@ -25,7 +25,6 @@ public class ValidationAdvice {
     @Around("allController()")
     public Object doValidation(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-        log.info("!!!! aop check!");
         Object[] args = proceedingJoinPoint.getArgs();
 
         for (Object arg : args) {

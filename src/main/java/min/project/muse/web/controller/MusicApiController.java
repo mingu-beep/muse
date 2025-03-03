@@ -26,15 +26,15 @@ public class MusicApiController {
     private final MusicService musicService;
     private final LikesService likesService;
 
-    @GetMapping
-    public ResponseEntity<?> loadMusicList(@AuthenticationPrincipal PrincipalDetails principal, @PageableDefault(value = 4) Pageable pageable) {
-
-        List<ShowMusicResponse> body = musicService.loadMusicList(principal, pageable);
-
-
-        // Music -> User -> Music 으로 순환참조 발생
-        return ResponseEntity.ok().body(body);
-    }
+//    @GetMapping
+//    public ResponseEntity<?> loadMusicList(@AuthenticationPrincipal PrincipalDetails principal, @PageableDefault(value = 4) Pageable pageable) {
+//
+//        List<ShowMusicResponse> body = musicService.loadMusicList(principal, pageable);
+//
+//
+//        // Music -> User -> Music 으로 순환참조 발생
+//        return ResponseEntity.ok().body(body);
+//    }
 
     // add
     @PostMapping("/{musicId}/likes")

@@ -103,7 +103,7 @@
             <div th:if="${dto.musicList.size() != 0}" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <!-- CARD -->
                 <div class="col" th:each="music : ${dto.musicList}">
-                    <div th:replace="/fragment/card :: card(${music})"></div>
+                    <div th:replace="~{/fragment/card :: card(${music})}"></div>
                 </div>
             </div>
             <div th:unless="${dto.musicList.size() != 0}" class="col-lg-6 col-md-8 mx-auto">

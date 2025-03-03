@@ -6,6 +6,7 @@
     <div th:replace="~{/fragment/header :: main-header}"></div>
     <!-- MAIN -->
     <main>
+
       <section class="py-5 text-center container">
         <div class="row py-lg-5">
           <div class="col-lg-6 col-md-8 mx-auto">
@@ -22,16 +23,57 @@
           </div>
         </div>
       </section>
+      <nav aria-label="Page navigation example" >
+        <ul class="pagination justify-content-center">
+
+          <li class="page-item">
+            <a class="page-link" th:href="@{/{menu}(menu = ${menu}, page=1)}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{/{menu}(menu = ${menu}, page=${beforePage})}" aria-label="Previous">
+              <span aria-hidden="true">&lt;</span>
+            </a>
+          </li>
+          <th:block  th:each="num: ${#numbers.sequence(startPage, endPage)}">
+
+            <li th:if="${musics.getNumber() == (num - 1)}" class="page-item active" aria-current="page">
+              <a class="page-link"
+                 th:href="@{/{menu}(menu = ${menu}, page=${num})}"
+                 th:text="${num}">1</a>
+            </li>
+
+            <li th:unless="${musics.getNumber() == (num - 1)}" class="page-item">
+              <a class="page-link"
+                 th:href="@{/{menu}(menu = ${menu}, page=${num})}"
+                 th:text="${num}">1</a>
+            </li>
+          </th:block>
+          <li class="page-item">
+            <a class="page-link" th:href="@{/{menu}(menu = ${menu}, page=${nextPage})}" aria-label="Next">
+              <span aria-hidden="true">&gt;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{/{menu}(menu = ${menu}, page=${musics.getTotalPages()})}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
       <div class="album py-5 ">
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
             <!-- CARD -->
             <div class="col" th:each="music : ${musics}">
-                <div th:replace="/fragment/card :: card(${music})"></div>
+                <div th:replace="~{/fragment/card :: card(${music})}"></div>
             </div>
           </div>
         </div>
       </div>
+
     </main>
 
 <!--    <script src="/js/modals.js"></script>-->
@@ -40,7 +82,6 @@
 <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>-->
 
   <div th:replace="~{/fragment/script :: script}"></div>
-  <script src="/js/home.js"></script>
   </body>
   </body>
 </html>

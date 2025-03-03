@@ -18,10 +18,14 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
     List<Music> findByCreateDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     @Query(value = "SELECT m.* FROM music m INNER JOIN (SELECT *, COUNT(*) likecount FROM likes GROUP BY music_id) l ON m.id = l.music_id ORDER BY l.likecount desc", nativeQuery = true)
-    List<Music> selectPopular();
+    Page<Music> selectPopular(Pageable pageable);
 
     @Query(value = "SELECT * FROM music", nativeQuery = true)
-    List<Music> selectMusicList(Pageable pageable);
+    Page<Music> selectMusicList(Pageable pageable);
+
+    @Query(value = "SELECT * FROM music WHERE create_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    Page<Music> selectByCreateDateBetween(@Param("startDate") LocalDateTime startDate,
+                                          @Param("endDate") LocalDateTime endDate, Pageable pageable);
 //    @Query(value = "SELECT COUNT(*) FROM music WHERE mood LIKE CONCAT('%', :keyword, '%')", nativeQuery = true)
 //    Integer countMusicsByMood(@Param("keyword") String keyword);
 

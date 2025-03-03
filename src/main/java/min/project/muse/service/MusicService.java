@@ -80,7 +80,7 @@ public class MusicService {
         return ConvertUtil.convertToMusicDto(musicRepository.findAll(), loginUserId);
     }
 
-    public List<ShowMusicResponse> findTodayMusicList(PrincipalDetails principal) {
+    public Page<ShowMusicResponse> findTodayMusicList(PrincipalDetails principal, Pageable pageable) {
 
         long loginUserId = principal != null ? principal.getUserId() : -1;
 
@@ -88,14 +88,17 @@ public class MusicService {
         LocalDateTime startOfDay = localDate.atStartOfDay();
         LocalDateTime endOfDay = localDate.atTime(LocalTime.MAX);
 
-        return ConvertUtil.convertToMusicDto(musicRepository.findByCreateDateBetween(startOfDay, endOfDay), loginUserId);
+        log.info("startOfDay : {}", startOfDay);
+        log.info("endOfDay : {}", endOfDay);
+
+        return ConvertUtil.convertToMusicPage(musicRepository.selectByCreateDateBetween(startOfDay, endOfDay, pageable), loginUserId);
     }
 
-    public List<ShowMusicResponse> findPopularMusicList(PrincipalDetails principal) {
+    public Page<ShowMusicResponse> findPopularMusicList(PrincipalDetails principal, Pageable pageable) {
 
         long loginUserId = principal != null ? principal.getUserId() : -1;
 
-        return ConvertUtil.convertToMusicDto(musicRepository.selectPopular(), loginUserId);
+        return ConvertUtil.convertToMusicPage(musicRepository.selectPopular(pageable), loginUserId);
     }
 
     // 음악 삭제 method
@@ -213,9 +216,9 @@ public class MusicService {
 
     }
 
-    public List<ShowMusicResponse> loadMusicList(PrincipalDetails principal, Pageable pageable) {
+    public Page<ShowMusicResponse> loadMusicList(PrincipalDetails principal, Pageable pageable) {
         long loginUserId = principal != null ? principal.getUserId() : -1;
 
-        return ConvertUtil.convertToMusicDto(musicRepository.selectMusicList(pageable), loginUserId);
+        return ConvertUtil.convertToMusicPage(musicRepository.selectMusicList(pageable), loginUserId);
     }
 }

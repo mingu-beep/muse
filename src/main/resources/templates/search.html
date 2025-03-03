@@ -16,7 +16,7 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <!-- CARD -->
                     <div class="col" th:each="music : ${title}">
-                        <div th:replace="/fragment/card :: card(${music})"></div>
+                        <div th:replace="~{/fragment/card :: card(${music})}"></div>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <!-- CARD -->
                     <div class="col" th:each="music : ${artist}">
-                        <div th:replace="/fragment/card :: card(${music})"></div>
+                        <div th:replace="~{/fragment/card :: card(${music})}"></div>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <!-- CARD -->
                     <div class="col" th:each="music : ${mood}">
-                        <div th:replace="/fragment/card :: card(${music})"></div>
+                        <div th:replace="~{/fragment/card :: card(${music})}"></div>
                     </div>
                 </div>
             </div>
