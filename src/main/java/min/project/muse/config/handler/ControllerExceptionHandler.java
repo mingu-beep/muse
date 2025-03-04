@@ -1,7 +1,7 @@
-package min.project.muse.domain.handler;
+package min.project.muse.config.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import min.project.muse.domain.handler.ex.CustomValidationException;
+import min.project.muse.config.handler.ex.CustomValidationException;
 import min.project.muse.util.Script;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

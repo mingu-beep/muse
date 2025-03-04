@@ -1,4 +1,4 @@
-package min.project.muse.config;
+package min.project.muse.config.handler.login;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

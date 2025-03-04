@@ -1,7 +1,7 @@
-package min.project.muse.domain.handler.aop;
+package min.project.muse.config.handler.aop;
 
 import lombok.extern.slf4j.Slf4j;
-import min.project.muse.domain.handler.ex.CustomValidationException;
+import min.project.muse.config.handler.ex.CustomValidationException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

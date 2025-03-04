@@ -1,4 +1,4 @@
-package min.project.muse.domain.handler.ex;
+package min.project.muse.config.handler.ex;
 
 import lombok.Getter;
 
