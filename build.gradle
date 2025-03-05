@@ -62,6 +62,10 @@ dependencies {
 	//Oauth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+
+	// WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket:3.3.2'
+
 }
 
 tasks.named('test') {
