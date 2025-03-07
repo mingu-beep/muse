@@ -56,27 +56,27 @@ public class WebSecurityConfig {
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(true)
                 )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/admin/**")
-                        ).hasRole("ADMIN")
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/login"),
-                                new AntPathRequestMatcher("/signup")
-                        ).anonymous()
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/img/**"),
-                                new AntPathRequestMatcher("/"),
-                                new AntPathRequestMatcher("/all"),
-                                new AntPathRequestMatcher("/user/**", "GET"),
-                                new AntPathRequestMatcher("/user", "POST"),
-                                new AntPathRequestMatcher("/musics", "GET"),
-                                new AntPathRequestMatcher("/popular"),
-                                new AntPathRequestMatcher("/today"),
-                                new AntPathRequestMatcher("/api/**", "GET")
-                        ).permitAll()
-                        .anyRequest().authenticated() // 위에 설정한 url 이외의 요청에 대해서는 인증이 필요하다.
-                )
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(
+//                                new AntPathRequestMatcher("/admin/**")
+//                        ).hasRole("ADMIN")
+//                        .requestMatchers(
+//                                new AntPathRequestMatcher("/login"),
+//                                new AntPathRequestMatcher("/signup")
+//                        ).anonymous()
+//                        .requestMatchers(
+//                                new AntPathRequestMatcher("/img/**"),
+//                                new AntPathRequestMatcher("/"),
+//                                new AntPathRequestMatcher("/all"),
+//                                new AntPathRequestMatcher("/user/**", "GET"),
+//                                new AntPathRequestMatcher("/user", "POST"),
+//                                new AntPathRequestMatcher("/musics", "GET"),
+//                                new AntPathRequestMatcher("/popular"),
+//                                new AntPathRequestMatcher("/today"),
+//                                new AntPathRequestMatcher("/api/**", "GET")
+//                        ).permitAll()
+//                        .anyRequest().authenticated() // 위에 설정한 url 이외의 요청에 대해서는 인증이 필요하다.
+//                )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")
 //                        .defaultSuccessUrl("/", true)

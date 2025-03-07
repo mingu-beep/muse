@@ -17,7 +17,6 @@ public class WebSocketStompBrokerConfig implements WebSocketMessageBrokerConfigu
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        WebSocketMessageBrokerConfigurer.super.configureMessageBroker(registry);
 
         // 구독 (sub) : 접두사로 시작하는 메시지를 브로커가 처리하도록 설정한다.
         // 클라이언트는 이 접두사로 시작하는 주제를 구독하여 메시지를 받을 수 있다.
@@ -42,9 +41,9 @@ public class WebSocketStompBrokerConfig implements WebSocketMessageBrokerConfigu
         registry
                 .addEndpoint("/ws-stomp")
                 // 클라이언트의 origin을 명시적으로 지정
-                .setAllowedOrigins("<http://localhost:3000>")
+//                .setAllowedOrigins("<http://localhost:3000>")
                 // WebSocket을 지원하지 않는 브라우저에서도 SockJS를 통해 WebSocket 기능을 사용할 수 있도록 한다.
                 .withSockJS();
-
+        // url : localhost:8080/ws-stomp
     }
 }
